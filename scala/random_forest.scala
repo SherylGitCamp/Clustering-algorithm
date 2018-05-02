@@ -66,7 +66,7 @@ object random_forest{
 //    val model = classifier.fit(trainingData)
 //    model.write.save("/home/v/Downloads/RF")
 
-    val SavedModel = RandomForestClassificationModel.load("/home/v/Downloads/saved_RF_gmm")
+    val SavedModel = RandomForestClassificationModel.load("/home/v/Downloads/saved_RF_gmm_0430_d4")
     while(true)
     {
       println("RTT,PL,NACK,Plis:")
