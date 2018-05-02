@@ -1,0 +1,2569 @@
+docker images
+//以交互方式查询因特网域名服务器
+v@v-desktop:~$ nslookup archive.ubuntu.com
+Server:		127.0.0.53
+Address:	127.0.0.53#53
+
+Non-authoritative answer:
+Name:	archive.ubuntu.com
+Address: 91.189.88.162
+Name:	archive.ubuntu.com
+Address: 91.189.88.152
+Name:	archive.ubuntu.com
+Address: 91.189.88.149
+Name:	archive.ubuntu.com
+Address: 91.189.88.161
+
+v@v-desktop:~$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+9784e6d058c6        9bac28aa87bc        "/bin/sh -c 'apt-get…"   2 minutes ago       Up 2 minutes                            agitated_wiles
+v@v-desktop:~$ cat /etc/resolv.conf 
+# This file is managed by man:systemd-resolved(8). Do not edit.
+#
+# 127.0.0.53 is the systemd-resolved stub resolver.
+# run "systemd-resolve --status" to see details about the actual nameservers.
+nameserver 127.0.0.53
+
+search ki.sw.ericsson.se
+v@v-desktop:~$ docker ps^C
+v@v-desktop:~$ ls
+core       Downloads         IdeaProjects  Public           Templates
+Desktop    examples.desktop  Music         scala_workspace  test.txt
+Documents  git               Pictures      SparkSMOTE       Videos
+v@v-desktop:~$ vim /etc/resolv.conf 
+v@v-desktop:~$ sudo vim /etc/resolv.conf 
+[sudo] password for v: 
+v@v-desktop:~$ nslookup archive.ubuntu.com
+Server:		147.214.252.30
+Address:	147.214.252.30#53
+
+Non-authoritative answer:
+Name:	archive.ubuntu.com
+Address: 91.189.88.162
+Name:	archive.ubuntu.com
+Address: 91.189.88.152
+Name:	archive.ubuntu.com
+Address: 91.189.88.149
+Name:	archive.ubuntu.com
+Address: 91.189.88.161
+
+
+v@v-desktop:~/git/dockerfiles/base$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Running in 9784e6d058c6
+Err:1 http://archive.ubuntu.com/ubuntu xenial InRelease
+  Temporary failure resolving 'archive.ubuntu.com'
+Err:2 http://security.ubuntu.com/ubuntu xenial-security InRelease
+  Temporary failure resolving 'security.ubuntu.com'
+Err:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease
+  Temporary failure resolving 'archive.ubuntu.com'
+Err:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease
+  Temporary failure resolving 'archive.ubuntu.com'
+Reading package lists...
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial/InRelease  Temporary failure resolving 'archive.ubuntu.com'
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial-updates/InRelease  Temporary failure resolving 'archive.ubuntu.com'
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/xenial-backports/InRelease  Temporary failure resolving 'archive.ubuntu.com'
+W: Failed to fetch http://security.ubuntu.com/ubuntu/dists/xenial-security/InRelease  Temporary failure resolving 'security.ubuntu.com'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
++ gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+gpg: directory `/root/.gnupg' created
+gpg: new configuration file `/root/.gnupg/gpg.conf' created
+gpg: WARNING: options in `/root/.gnupg/gpg.conf' are not yet active during this run
+gpg: keyring `/root/.gnupg/secring.gpg' created
+gpg: keyring `/root/.gnupg/pubring.gpg' created
+gpg: requesting key BF357DD4 from hkp server ha.pool.sks-keyservers.net
+^C^C
+v@v-desktop:~/git/dockerfiles/base$ service docker restart
+v@v-desktop:~/git/dockerfiles/base$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Running in 20c802d6867d
+Get:1 http://archive.ubuntu.com/ubuntu xenial InRelease [247 kB]
+Get:2 http://security.ubuntu.com/ubuntu xenial-security InRelease [107 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:5 http://security.ubuntu.com/ubuntu xenial-security/main Sources [148 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial/main Sources [1,103 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/restricted Sources [5,179 B]
+Get:8 http://archive.ubuntu.com/ubuntu xenial/universe Sources [9,802 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial/multiverse Sources [215 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial/main amd64 Packages [1,558 kB]
+Get:11 http://security.ubuntu.com/ubuntu xenial-security/restricted Sources [2,243 B]
+Get:12 http://security.ubuntu.com/ubuntu xenial-security/universe Sources [80.0 kB]
+Get:13 http://security.ubuntu.com/ubuntu xenial-security/multiverse Sources [1,490 B]
+Get:14 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [612 kB]
+Get:15 http://archive.ubuntu.com/ubuntu xenial/restricted amd64 Packages [14.1 kB]
+Get:16 http://archive.ubuntu.com/ubuntu xenial/universe amd64 Packages [9,827 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial/multiverse amd64 Packages [176 kB]
+Get:18 http://archive.ubuntu.com/ubuntu xenial-updates/main Sources [385 kB]
+Get:19 http://archive.ubuntu.com/ubuntu xenial-updates/restricted Sources [2,684 B]
+Get:20 http://archive.ubuntu.com/ubuntu xenial-updates/universe Sources [254 kB]
+Get:21 http://archive.ubuntu.com/ubuntu xenial-updates/multiverse Sources [8,514 B]
+Get:22 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [991 kB]
+Get:23 http://archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [13.1 kB]
+Get:24 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [804 kB]
+Get:25 http://archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 Packages [18.5 kB]
+Get:26 http://archive.ubuntu.com/ubuntu xenial-backports/main Sources [3,518 B]
+Get:27 http://archive.ubuntu.com/ubuntu xenial-backports/universe Sources [6,203 B]
+Get:28 http://archive.ubuntu.com/ubuntu xenial-backports/main amd64 Packages [5,157 B]
+Get:29 http://archive.ubuntu.com/ubuntu xenial-backports/universe amd64 Packages [8,075 B]
+Get:30 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 Packages [12.7 kB]
+Get:31 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [435 kB]
+Get:32 http://security.ubuntu.com/ubuntu xenial-security/multiverse amd64 Packages [3,489 B]
+Fetched 27.1 MB in 2s (9,544 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+The following packages will be upgraded:
+  libpam-modules libpam-modules-bin libpam-runtime libpam0g libssl1.0.0
+  openssl perl-base
+7 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3,238 kB of archives.
+After this operation, 6,144 B of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 perl-base amd64 5.22.1-9ubuntu0.3 [1,286 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpam0g amd64 1.1.8-3.2ubuntu2.1 [55.6 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpam-modules-bin amd64 1.1.8-3.2ubuntu2.1 [36.9 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpam-modules amd64 1.1.8-3.2ubuntu2.1 [244 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpam-runtime all 1.1.8-3.2ubuntu2.1 [37.9 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libssl1.0.0 amd64 1.0.2g-1ubuntu4.12 [1,085 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 openssl amd64 1.0.2g-1ubuntu4.12 [492 kB]
+Preconfiguring packages ...
+Fetched 3,238 kB in 0s (7,589 kB/s)
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../perl-base_5.22.1-9ubuntu0.3_amd64.deb ...
+Unpacking perl-base (5.22.1-9ubuntu0.3) over (5.22.1-9ubuntu0.2) ...
+Setting up perl-base (5.22.1-9ubuntu0.3) ...
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../libpam0g_1.1.8-3.2ubuntu2.1_amd64.deb ...
+Unpacking libpam0g:amd64 (1.1.8-3.2ubuntu2.1) over (1.1.8-3.2ubuntu2) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libpam0g:amd64 (1.1.8-3.2ubuntu2.1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../libpam-modules-bin_1.1.8-3.2ubuntu2.1_amd64.deb ...
+Unpacking libpam-modules-bin (1.1.8-3.2ubuntu2.1) over (1.1.8-3.2ubuntu2) ...
+Setting up libpam-modules-bin (1.1.8-3.2ubuntu2.1) ...
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../libpam-modules_1.1.8-3.2ubuntu2.1_amd64.deb ...
+Unpacking libpam-modules:amd64 (1.1.8-3.2ubuntu2.1) over (1.1.8-3.2ubuntu2) ...
+Setting up libpam-modules:amd64 (1.1.8-3.2ubuntu2.1) ...
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../libpam-runtime_1.1.8-3.2ubuntu2.1_all.deb ...
+Unpacking libpam-runtime (1.1.8-3.2ubuntu2.1) over (1.1.8-3.2ubuntu2) ...
+Setting up libpam-runtime (1.1.8-3.2ubuntu2.1) ...
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../libssl1.0.0_1.0.2g-1ubuntu4.12_amd64.deb ...
+Unpacking libssl1.0.0:amd64 (1.0.2g-1ubuntu4.12) over (1.0.2g-1ubuntu4.11) ...
+Preparing to unpack .../openssl_1.0.2g-1ubuntu4.12_amd64.deb ...
+Unpacking openssl (1.0.2g-1ubuntu4.12) over (1.0.2g-1ubuntu4.11) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libssl1.0.0:amd64 (1.0.2g-1ubuntu4.12) ...
+Setting up openssl (1.0.2g-1ubuntu4.12) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
++ gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+gpg: directory `/root/.gnupg' created
+gpg: new configuration file `/root/.gnupg/gpg.conf' created
+gpg: WARNING: options in `/root/.gnupg/gpg.conf' are not yet active during this run
+gpg: keyring `/root/.gnupg/secring.gpg' created
+gpg: keyring `/root/.gnupg/pubring.gpg' created
+gpg: requesting key BF357DD4 from hkp server ha.pool.sks-keyservers.net
+gpg: /root/.gnupg/trustdb.gpg: trustdb created
+gpg: key BF357DD4: public key "Tianon Gravi <tianon@tianon.xyz>" imported
+gpg: no ultimately trusted keys found
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
++ dpkg --print-architecture
++ curl -Lo /usr/local/bin/gosu https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   600    0   600    0     0    723      0 --:--:-- --:--:-- --:--:--   723
+100 1256k  100 1256k    0     0   378k      0  0:00:03  0:00:03 --:--:--  539k
++ dpkg --print-architecture
++ curl -Lo /usr/local/bin/gosu.asc https://github.com/tianon/gosu/releases/download/1.10/gosu-amd64.asc
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   604    0   604    0     0    847      0 --:--:-- --:--:-- --:--:--   847
+100   543  100   543    0     0    387      0  0:00:01  0:00:01 --:--:--   387
++ gpg --verify /usr/local/bin/gosu.asc
+gpg: assuming signed data in `/usr/local/bin/gosu'
+gpg: Signature made Wed 28 Sep 2016 10:22:56 PM UTC using RSA key ID BF357DD4
+gpg: Good signature from "Tianon Gravi <tianon@tianon.xyz>"
+gpg:                 aka "Tianon Gravi <tianon@debian.org>"
+gpg:                 aka "Tianon Gravi <tianon@dockerproject.org>"
+gpg:                 aka "Andrew Page (tianon) <andrew@infosiftr.com>"
+gpg:                 aka "Andrew Page (tianon) <andrew@vitalroute.com>"
+gpg:                 aka "Andrew Page (Tianon Gravi) <admwiggin@gmail.com>"
+gpg:                 aka "Tianon Gravi (Andrew Page) <tianon@infosiftr.com>"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: B42F 6819 007F 00F8 8E36  4FD4 036A 9C25 BF35 7DD4
++ rm /usr/local/bin/gosu.asc
++ chmod +x /usr/local/bin/gosu
++ apt-get install -y --no-install-recommends apt-transport-https rsync
+Reading package lists...
+Building dependency tree...
+Reading state information...
+apt-transport-https is already the newest version (1.2.26).
+The following NEW packages will be installed:
+  rsync
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 329 kB of archives.
+After this operation, 709 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 rsync amd64 3.1.1-3ubuntu1.2 [329 kB]
+Fetched 329 kB in 0s (1,491 kB/s)
+Selecting previously unselected package rsync.
+(Reading database ... 8750 files and directories currently installed.)
+Preparing to unpack .../rsync_3.1.1-3ubuntu1.2_amd64.deb ...
+Unpacking rsync (3.1.1-3ubuntu1.2) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Setting up rsync (3.1.1-3ubuntu1.2) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of restart.
+Processing triggers for systemd (229-4ubuntu21.2) ...
++ apt-get dist-upgrade -y
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
++ apt-get clean
++ rm -rf /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-backports_InRelease /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-backports_main_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-backports_main_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-backports_universe_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-backports_universe_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_InRelease /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_main_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_main_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_multiverse_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_multiverse_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_restricted_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_restricted_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_universe_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial-updates_universe_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_InRelease /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_main_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_main_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_multiverse_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_multiverse_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_restricted_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_restricted_source_Sources.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_universe_binary-amd64_Packages.lz4 /var/lib/apt/lists/archive.ubuntu.com_ubuntu_dists_xenial_universe_source_Sources.lz4 /var/lib/apt/lists/lock /var/lib/apt/lists/partial /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_InRelease /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_main_binary-amd64_Packages.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_main_source_Sources.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_multiverse_binary-amd64_Packages.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_multiverse_source_Sources.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_restricted_binary-amd64_Packages.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_restricted_source_Sources.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_universe_binary-amd64_Packages.lz4 /var/lib/apt/lists/security.ubuntu.com_ubuntu_dists_xenial-security_universe_source_Sources.lz4 /tmp/* /var/tmp/*
+Removing intermediate container 20c802d6867d
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Running in e9952f037d58
+Removing intermediate container e9952f037d58
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Running in 488d385bd4b0
+Removing intermediate container 488d385bd4b0
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+ERROR: Couldn't find goss installation, please set GOSS_PATH to it
+ERROR: Tests failed -- not pushing image
+v@v-desktop:~/git/dockerfiles/base$ pwd
+/home/v/git/dockerfiles/base
+v@v-desktop:~/git/dockerfiles/base$ cd ..
+v@v-desktop:~/git/dockerfiles$ ls
+alertmanager              ci-snissh-client-node  kibana            postgres
+base                      coturn                 list_images.sh    prometheus
+blackbox-exporter         elasticd               list_versions.sh  pushgateway
+build                     elasticsearch          mongo             README.md
+build.sh                  filebeat               nginx             sshd
+_build_synapse_images.sh  go-app                 nginx-extras      synapse
+cadvisor                  goss                   nginx-reload      TODO.md
+ci-docker-client          grafana                node
+ci-node                   haproxy                node-app
+ci-snissh-client          java                   node-exporter
+v@v-desktop:~/git/dockerfiles$ cd coturn/
+v@v-desktop:~/git/dockerfiles/coturn$ pwd
+/home/v/git/dockerfiles/coturn
+v@v-desktop:~/git/dockerfiles/coturn$ ls
+build.sh       coturn_run  goss.yaml  README.md
+coturn_finish  Dockerfile  keys       turnserver.conf
+v@v-desktop:~/git/dockerfiles/coturn$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/coturn/../ci-docker-client/tools
+Building coturn:007
+Sending build context to Docker daemon  19.97kB
+Step 1/12 : FROM dock.cct.ericsson.net/base:008
+Get https://dock.cct.ericsson.net/v2/: EOF
+failed to build coturn:007
+v@v-desktop:~/git/dockerfiles/coturn$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+base                008                 f9b1879aa68e        41 seconds ago      255MB
+hello-world         latest              e38bc07ac18e        2 weeks ago         1.85kB
+phusion/baseimage   0.10.1              2391dfad8777        4 weeks ago         241MB
+v@v-desktop:~/git/dockerfiles/coturn$ vim Dockerfile 
+v@v-desktop:~/git/dockerfiles/coturn$ ^C
+v@v-desktop:~/git/dockerfiles/coturn$ cd ..
+v@v-desktop:~/git/dockerfiles$ ./build.sh 
+Entering /home/v/git/dockerfiles/base ...
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Using cache
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Using cache
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Using cache
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> Using cache
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+ERROR: Couldn't find goss installation, please set GOSS_PATH to it
+ERROR: Tests failed -- not pushing image
+v@v-desktop:~/git/dockerfiles$ vim build.sh 
+v@v-desktop:~/git/dockerfiles$ cd build/
+v@v-desktop:~/git/dockerfiles/build$ ls
+build.sh  Dockerfile  functions.sh  goss.yaml  README.md
+v@v-desktop:~/git/dockerfiles/build$ vim build.sh 
+v@v-desktop:~/git/dockerfiles/build$ ls
+build.sh  Dockerfile  functions.sh  goss.yaml  README.md
+v@v-desktop:~/git/dockerfiles/build$ cat functions.sh ^C
+v@v-desktop:~/git/dockerfiles/build$ cd ..
+v@v-desktop:~/git/dockerfiles$ cd base/
+v@v-desktop:~/git/dockerfiles/base$ ls
+build.sh  Dockerfile  goss_wait.yaml  goss.yaml  our_init
+v@v-desktop:~/git/dockerfiles/base$ vim b^C
+v@v-desktop:~/git/dockerfiles/base$ cat build.sh 
+#!/bin/bash
+
+prefix="$(cd $(dirname ${BASH_SOURCE[0]}); pwd)"
+. ${prefix}/../build/functions.sh
+
+VERSION=008
+
+test_method(){
+    run_dgoss_tests base
+}
+
+build_and_push "base:$VERSION"
+
+v@v-desktop:~/git/dockerfiles/base$ cd ../build/
+v@v-desktop:~/git/dockerfiles/build$ vim functions.sh 
+v@v-desktop:~/git/dockerfiles/build$ pwd
+/home/v/git/dockerfiles/build
+v@v-desktop:~/git/dockerfiles/build$ cd ..
+v@v-desktop:~/git/dockerfiles$ ls
+alertmanager              ci-snissh-client-node  kibana            postgres
+base                      coturn                 list_images.sh    prometheus
+blackbox-exporter         elasticd               list_versions.sh  pushgateway
+build                     elasticsearch          mongo             README.md
+build.sh                  filebeat               nginx             sshd
+_build_synapse_images.sh  go-app                 nginx-extras      synapse
+cadvisor                  goss                   nginx-reload      TODO.md
+ci-docker-client          grafana                node
+ci-node                   haproxy                node-app
+ci-snissh-client          java                   node-exporter
+v@v-desktop:~/git/dockerfiles$ vim build.sh 
+v@v-desktop:~/git/dockerfiles$ cd build/
+v@v-desktop:~/git/dockerfiles/build$ ls
+build.sh  Dockerfile  functions.sh  goss.yaml  README.md
+v@v-desktop:~/git/dockerfiles/build$ vim functions.sh 
+v@v-desktop:~/git/dockerfiles/build$ vim functions.sh 
+v@v-desktop:~/git/dockerfiles/build$ cd ..
+v@v-desktop:~/git/dockerfiles$ cd base
+v@v-desktop:~/git/dockerfiles/base$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Using cache
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Using cache
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Using cache
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> Using cache
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+ERROR: Couldn't find goss installation, please set GOSS_PATH to it
+ERROR: Tests failed -- not pushing image
+v@v-desktop:~/git/dockerfiles/base$ goss
+No command 'goss' found, did you mean:
+ Command 'aoss' from package 'alsa-oss' (universe)
+ Command 'gosa' from package 'gosa-desktop' (universe)
+ Command 'gosh' from package 'gauche' (universe)
+ Command 'gosu' from package 'gosu' (universe)
+ Command 'gss' from package 'libgss-dev' (universe)
+goss: command not found
+v@v-desktop:~/git/dockerfiles/base$ sudo apt-get install goss
+[sudo] password for v: 
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+E: Unable to locate package goss
+v@v-desktop:~/git/dockerfiles/base$ sudo apt-get install gosu
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libcuda1-304 libxnvctrl0 linux-headers-4.13.0-21
+  linux-headers-4.13.0-21-generic linux-image-4.13.0-21-generic
+  linux-image-extra-4.13.0-21-generic screen-resolution-extra
+Use 'sudo apt autoremove' to remove them.
+The following NEW packages will be installed:
+  gosu
+0 upgraded, 1 newly installed, 0 to remove and 30 not upgraded.
+Need to get 434 kB of archives.
+After this operation, 1 698 kB of additional disk space will be used.
+Get:1 http://se.archive.ubuntu.com/ubuntu artful/universe amd64 gosu amd64 1.10-1 [434 kB]
+Fetched 434 kB in 0s (4 627 kB/s)
+Selecting previously unselected package gosu.
+(Reading database ... 317338 files and directories currently installed.)
+Preparing to unpack .../archives/gosu_1.10-1_amd64.deb ...
+Unpacking gosu (1.10-1) ...
+Setting up gosu (1.10-1) ...
+v@v-desktop:~/git/dockerfiles/base$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Using cache
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Using cache
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Using cache
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> Using cache
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+ERROR: Couldn't find goss installation, please set GOSS_PATH to it
+ERROR: Tests failed -- not pushing image
+v@v-desktop:~/git/dockerfiles/base$ sudo apt-get install gosu^C
+v@v-desktop:~/git/dockerfiles/base$ sudo apt-get install dgoss
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+E: Unable to locate package dgoss
+v@v-desktop:~/git/dockerfiles/base$ sudo apt-get install dgoss^C
+v@v-desktop:~/git/dockerfiles/base$ vim ../build/functions.sh 
+v@v-desktop:~/git/dockerfiles/base$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Using cache
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Using cache
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Using cache
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> Using cache
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+ERROR: Couldn't find goss installation, please set GOSS_PATH to it
+ERROR: Tests failed -- not pushing image
+v@v-desktop:~/git/dockerfiles/base$ vim ../build/functions.sh 
+v@v-desktop:~/git/dockerfiles/base$ curl -fsSL https://goss.rocks/install | sh
+touch: cannot touch '/usr/local/bin/goss': Permission denied
+ERROR: Cannot write to /usr/local/bin set GOSS_DST elsewhere or use sudo
+v@v-desktop:~/git/dockerfiles/base$ sudo curl -fsSL https://goss.rocks/install | sh
+touch: cannot touch '/usr/local/bin/goss': Permission denied
+ERROR: Cannot write to /usr/local/bin set GOSS_DST elsewhere or use sudo
+v@v-desktop:~/git/dockerfiles/base$ curl -fsSL https://goss.rocks/install |sudo  sh
+
+^C
+v@v-desktop:~/git/dockerfiles/base$ curl -fsSL https://goss.rocks/install | sh^C
+v@v-desktop:~/git/dockerfiles/base$ curl -L https://github.com/aelsabbahy/goss/releases/download/_VERSION_/goss-linux-amd64 -o /usr/local/bin/goss
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0Warning: Failed to create the file /usr/local/bin/goss: Permission denied
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (23) Failed writing body (0 != 9)
+v@v-desktop:~/git/dockerfiles/base$ chmod +rx /usr/local/bin/goss
+chmod: cannot access '/usr/local/bin/goss': No such file or directory
+v@v-desktop:~/git/dockerfiles/base$ curl -L https://github.com/aelsabbahy/goss/releases/download/_VERSION_/goss-linux-amd64 ^C /usr/local/bin/goss
+v@v-desktop:~/git/dockerfiles/base$ curl -L https://github.com/aelsabbahy/goss/releases/download/0.3.5/goss-linux-amd64 -o /usr/local/bin/goss
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0Warning: Failed to create the file /usr/local/bin/goss: Permission denied
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+curl: (23) Failed writing body (0 != 9)
+v@v-desktop:~/git/dockerfiles/base$ curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.5/goss-linux-amd64 -o /usr/local/bin/goss
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   606    0   606    0     0    606      0 --:--:-- --:--:-- --:--:--  1167
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0Warning: Failed to create the file /usr/local/bin/goss: Permission denied
+  0 8312k    0 16360    0     0  16360      0  0:08:40  0:00:01  0:08:39 37437
+curl: (23) Failed writing body (0 != 16360)
+v@v-desktop:~/git/dockerfiles/base$ sudo curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.5/goss-linux-amd64 -o /usr/local/bin/goss
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   606    0   606    0     0    606      0 --:--:-- --:--:-- --:--:--  1188
+100 8312k  100 8312k    0     0  2078k      0  0:00:04  0:00:04 --:--:-- 2820k
+v@v-desktop:~/git/dockerfiles/base$ sudo chmod +rx /usr/local/bin/gossv@v-desktop:~/git/dockerfiles/base$ ./build.sh GOSS_DIR: /home/v/git/dockerfiles/base/../ci-docker-client/tools
+Building base:008
+Sending build context to Docker daemon  10.24kB
+Step 1/8 : FROM phusion/baseimage:0.10.1
+ ---> 2391dfad8777
+Step 2/8 : ENV DEBIAN_FRONTEND noninteractive
+ ---> Using cache
+ ---> b03215c60579
+Step 3/8 : ENV GOSU_VERSION 1.10
+ ---> Using cache
+ ---> ec2d2bc65ce6
+Step 4/8 : LABEL com.ericsson.c3.gosu.version=$GOSU_VERSION
+ ---> Using cache
+ ---> 9bac28aa87bc
+Step 5/8 : RUN apt-get update     && apt-get dist-upgrade -y -o Dpkg::Options::="--force-confold"     && set -x     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4     && curl -Lo /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)"     && curl -Lo /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc"     && gpg --verify /usr/local/bin/gosu.asc     && rm /usr/local/bin/gosu.asc     && chmod +x /usr/local/bin/gosu     && apt-get install -y --no-install-recommends         apt-transport-https rsync    && apt-get dist-upgrade -y     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ ---> Using cache
+ ---> 922689b035e9
+Step 6/8 : RUN rm /var/log/syslog
+ ---> Using cache
+ ---> c0f901b115d7
+Step 7/8 : CMD ["/sbin/our_init"]
+ ---> Using cache
+ ---> 6b26952237ce
+Step 8/8 : COPY our_init /sbin/our_init
+ ---> Using cache
+ ---> f9b1879aa68e
+Successfully built f9b1879aa68e
+Successfully tagged base:008
+Running dgoss test for base
+INFO: Starting goss container with strategy cp
+INFO: Creating docker container
+INFO: Copy goss files into container
+INFO: Copying files from /tmp/tmp.kfIXxfKpnw to 98ec86379e8ea1b37f1c10be26be287948b7c0715ef03ca93768ad512bd7a480:/goss. Files available in temp dir: goss
+goss_wait.yaml
+goss.yaml
++ cd /tmp/tmp.kfIXxfKpnw
++ docker cp . 98ec86379e8ea1b37f1c10be26be287948b7c0715ef03ca93768ad512bd7a480:/goss
++ [[ -d /home/v/git/dockerfiles/base/../ci-docker-client/tools ]]
++ cd /home/v/git/dockerfiles/base/../ci-docker-client/tools
++ docker cp . 98ec86379e8ea1b37f1c10be26be287948b7c0715ef03ca93768ad512bd7a480:/goss
++ set +x
+INFO: Starting docker container
+INFO: Stuff avilable in container after copy: /goss
+/goss/dgoss
+/goss/goss
+/goss/goss.yaml
+/goss/goss-linux-amd64
+/goss/goss_wait.yaml
+/goss/goss_files
+/goss/goss_files/base
+/goss/goss_files/base/packages_up_to_date.sh
+/goss/goss_files/base/goss_base.yaml.
+INFO: Container ID: 98ec8637
+INFO: Found goss_wait.yaml, waiting for it to pass before running tests
+INFO: Sleeping for 0.2
+INFO: Running Tests
+File: /etc/my_init.d: exists: matches expectation: [true]
+File: /etc/my_init.d: mode: matches expectation: ["0755"]
+File: /etc/my_init.d: owner: matches expectation: ["root"]
+File: /etc/my_init.d: group: matches expectation: ["root"]
+File: /etc/my_init.d: filetype: matches expectation: ["directory"]
+File: /etc/my_init.d: size: matches expectation: [4096]
+Process: syslog-ng: running: matches expectation: [true]
+Process: runsv: running: matches expectation: [true]
+Command: /goss/goss_files/base/packages_up_to_date.sh: exit-status: matches expectation: [0]
+Command: /goss/goss_files/base/packages_up_to_date.sh: stdout: matches expectation: [0]
+
+
+Total Duration: 5.275s
+Count: 10, Failed: 0, Skipped: 0
+===================== START Log from goss ==========================
+
+====================== END Log from goss ===========================
+INFO: Deleting container
+REGISTRY IS dock.cct.ericsson.net dock.xcs.c3.ericsson.net 
+registry is dock.cct.ericsson.net
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                  Warning dock.cct.ericsson.net/base:008 not pushed to registry                                   #
+#                                                                                                                                  #
+####################################################################################################################################
+
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                 Warning dock.cct.ericsson.net/base:latest not pushed to registry                                 #
+#                                                                                                                                  #
+####################################################################################################################################
+
+registry is dock.xcs.c3.ericsson.net
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                 Warning dock.xcs.c3.ericsson.net/base:008 not pushed to registry                                 #
+#                                                                                                                                  #
+####################################################################################################################################
+
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                               Warning dock.xcs.c3.ericsson.net/base:latest not pushed to registry                                #
+#                                                                                                                                  #
+####################################################################################################################################
+
+v@v-desktop:~/git/dockerfiles/base$ docker images
+REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
+dock.xcs.c3.ericsson.net/base   008                 f9b1879aa68e        23 minutes ago      255MB
+dock.xcs.c3.ericsson.net/base   latest              f9b1879aa68e        23 minutes ago      255MB
+base                            008                 f9b1879aa68e        23 minutes ago      255MB
+dock.cct.ericsson.net/base      008                 f9b1879aa68e        23 minutes ago      255MB
+dock.cct.ericsson.net/base      latest              f9b1879aa68e        23 minutes ago      255MB
+hello-world                     latest              e38bc07ac18e        2 weeks ago         1.85kB
+phusion/baseimage               0.10.1              2391dfad8777        4 weeks ago         241MB
+v@v-desktop:~/git/dockerfiles/base$ pwd
+/home/v/git/dockerfiles/base
+v@v-desktop:~/git/dockerfiles/base$ cd ..
+v@v-desktop:~/git/dockerfiles$ cd coturn/
+v@v-desktop:~/git/dockerfiles/coturn$ ls
+build.sh       coturn_run  goss.yaml  README.md
+coturn_finish  Dockerfile  keys       turnserver.conf
+v@v-desktop:~/git/dockerfiles/coturn$ ./build.sh 
+GOSS_DIR: /home/v/git/dockerfiles/coturn/../ci-docker-client/tools
+Building coturn:007
+Sending build context to Docker daemon  19.97kB
+Step 1/12 : FROM dock.cct.ericsson.net/base:008
+ ---> f9b1879aa68e
+Step 2/12 : MAINTAINER Ken Dai <ken.dai@ericsson.com>
+ ---> Running in 31b0c5358e72
+Removing intermediate container 31b0c5358e72
+ ---> 50b2db2c0bb5
+Step 3/12 : ENV COTURN_VERSION 4.5.0.3-1build1
+ ---> Running in 69fdbd69aa4a
+Removing intermediate container 69fdbd69aa4a
+ ---> 570ce7eee739
+Step 4/12 : LABEL com.ericsson.c3.coturn.version=$COTURN_VERSION
+ ---> Running in a433632ac445
+Removing intermediate container a433632ac445
+ ---> 5deea1eecc23
+Step 5/12 : RUN apt-get update     && apt-get install -y        coturn=4.5.0.3-1build1        -o APT::Install-Suggests=0        -o APT::Install-Recommends=0
+ ---> Running in a61cf64d1be1
+Get:1 http://archive.ubuntu.com/ubuntu xenial InRelease [247 kB]
+Get:2 http://security.ubuntu.com/ubuntu xenial-security InRelease [107 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial/main Sources [1,103 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial/restricted Sources [5,179 B]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/universe Sources [9,802 kB]
+Get:8 http://archive.ubuntu.com/ubuntu xenial/multiverse Sources [215 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial/main amd64 Packages [1,558 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial/restricted amd64 Packages [14.1 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial/universe amd64 Packages [9,827 kB]
+Get:12 http://security.ubuntu.com/ubuntu xenial-security/main Sources [148 kB]
+Get:13 http://archive.ubuntu.com/ubuntu xenial/multiverse amd64 Packages [176 kB]
+Get:14 http://archive.ubuntu.com/ubuntu xenial-updates/main Sources [385 kB]
+Get:15 http://archive.ubuntu.com/ubuntu xenial-updates/restricted Sources [2,684 B]
+Get:16 http://archive.ubuntu.com/ubuntu xenial-updates/universe Sources [254 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial-updates/multiverse Sources [8,514 B]
+Get:18 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [991 kB]
+Get:19 http://archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [13.1 kB]
+Get:20 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [804 kB]
+Get:21 http://archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 Packages [18.5 kB]
+Get:22 http://archive.ubuntu.com/ubuntu xenial-backports/main Sources [3,518 B]
+Get:23 http://archive.ubuntu.com/ubuntu xenial-backports/universe Sources [6,203 B]
+Get:24 http://archive.ubuntu.com/ubuntu xenial-backports/main amd64 Packages [5,157 B]
+Get:25 http://archive.ubuntu.com/ubuntu xenial-backports/universe amd64 Packages [8,075 B]
+Get:26 http://security.ubuntu.com/ubuntu xenial-security/restricted Sources [2,243 B]
+Get:27 http://security.ubuntu.com/ubuntu xenial-security/universe Sources [80.0 kB]
+Get:28 http://security.ubuntu.com/ubuntu xenial-security/multiverse Sources [1,490 B]
+Get:29 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [612 kB]
+Get:30 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 Packages [12.7 kB]
+Get:31 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [435 kB]
+Get:32 http://security.ubuntu.com/ubuntu xenial-security/multiverse amd64 Packages [3,489 B]
+Fetched 27.1 MB in 2s (9,748 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libevent-core-2.0-5 libevent-extra-2.0-5 libevent-openssl-2.0-5
+  libevent-pthreads-2.0-5 libhiredis0.13 libmysqlclient20 libpq5 mysql-common
+  netbase telnet
+Suggested packages:
+  sip-router xmpp-server
+Recommended packages:
+  ifupdown
+The following NEW packages will be installed:
+  coturn libevent-core-2.0-5 libevent-extra-2.0-5 libevent-openssl-2.0-5
+  libevent-pthreads-2.0-5 libhiredis0.13 libmysqlclient20 libpq5 mysql-common
+  netbase telnet
+0 upgraded, 11 newly installed, 0 to remove and 0 not upgraded.
+Need to get 1,445 kB of archives.
+After this operation, 6,710 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial/main amd64 netbase all 5.3 [12.9 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial/main amd64 telnet amd64 0.17-40 [63.5 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-core-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [70.6 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-extra-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [51.1 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-openssl-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [10.6 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-pthreads-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [5,020 B]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/universe amd64 libhiredis0.13 amd64 0.13.3-2 [25.0 kB]
+Get:8 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 mysql-common all 5.7.22-0ubuntu0.16.04.1 [15.4 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libmysqlclient20 amd64 5.7.22-0ubuntu0.16.04.1 [809 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpq5 amd64 9.5.12-0ubuntu0.16.04 [79.0 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial/universe amd64 coturn amd64 4.5.0.3-1build1 [302 kB]
+Fetched 1,445 kB in 0s (4,554 kB/s)
+Selecting previously unselected package netbase.
+(Reading database ... 8780 files and directories currently installed.)
+Preparing to unpack .../archives/netbase_5.3_all.deb ...
+Unpacking netbase (5.3) ...
+Selecting previously unselected package telnet.
+Preparing to unpack .../telnet_0.17-40_amd64.deb ...
+Unpacking telnet (0.17-40) ...
+Selecting previously unselected package libevent-core-2.0-5:amd64.
+Preparing to unpack .../libevent-core-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb ...
+Unpacking libevent-core-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Selecting previously unselected package libevent-extra-2.0-5:amd64.
+Preparing to unpack .../libevent-extra-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb ...
+Unpacking libevent-extra-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Selecting previously unselected package libevent-openssl-2.0-5:amd64.
+Preparing to unpack .../libevent-openssl-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb ...
+Unpacking libevent-openssl-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Selecting previously unselected package libevent-pthreads-2.0-5:amd64.
+Preparing to unpack .../libevent-pthreads-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb ...
+Unpacking libevent-pthreads-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Selecting previously unselected package libhiredis0.13:amd64.
+Preparing to unpack .../libhiredis0.13_0.13.3-2_amd64.deb ...
+Unpacking libhiredis0.13:amd64 (0.13.3-2) ...
+Selecting previously unselected package mysql-common.
+Preparing to unpack .../mysql-common_5.7.22-0ubuntu0.16.04.1_all.deb ...
+Unpacking mysql-common (5.7.22-0ubuntu0.16.04.1) ...
+Selecting previously unselected package libmysqlclient20:amd64.
+Preparing to unpack .../libmysqlclient20_5.7.22-0ubuntu0.16.04.1_amd64.deb ...
+Unpacking libmysqlclient20:amd64 (5.7.22-0ubuntu0.16.04.1) ...
+Selecting previously unselected package libpq5:amd64.
+Preparing to unpack .../libpq5_9.5.12-0ubuntu0.16.04_amd64.deb ...
+Unpacking libpq5:amd64 (9.5.12-0ubuntu0.16.04) ...
+Selecting previously unselected package coturn.
+Preparing to unpack .../coturn_4.5.0.3-1build1_amd64.deb ...
+Unpacking coturn (4.5.0.3-1build1) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Setting up netbase (5.3) ...
+Setting up telnet (0.17-40) ...
+update-alternatives: using /usr/bin/telnet.netkit to provide /usr/bin/telnet (telnet) in auto mode
+Setting up libevent-core-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Setting up libevent-extra-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Setting up libevent-openssl-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Setting up libevent-pthreads-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+Setting up libhiredis0.13:amd64 (0.13.3-2) ...
+Setting up mysql-common (5.7.22-0ubuntu0.16.04.1) ...
+update-alternatives: using /etc/mysql/my.cnf.fallback to provide /etc/mysql/my.cnf (my.cnf) in auto mode
+Setting up libmysqlclient20:amd64 (5.7.22-0ubuntu0.16.04.1) ...
+Setting up libpq5:amd64 (9.5.12-0ubuntu0.16.04) ...
+Setting up coturn (4.5.0.3-1build1) ...
+Adding group `turnserver' (GID 108) ...
+Done.
+Adding system user `turnserver' (UID 106) ...
+Adding new user `turnserver' (UID 106) with group `turnserver' ...
+Not creating home directory `/'.
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Removing intermediate container a61cf64d1be1
+ ---> 37e9a03b3647
+Step 6/12 : WORKDIR /root/coturn
+Removing intermediate container 38c831c18713
+ ---> 8fcfee7b92b4
+Step 7/12 : EXPOSE 443
+ ---> Running in ba109d08077c
+Removing intermediate container ba109d08077c
+ ---> b01284e0320d
+Step 8/12 : COPY turnserver.conf /root/coturn/turnserver.conf
+ ---> 5a710cb3d52a
+Step 9/12 : COPY keys/turn_server_cert.pem /root/coturn/turn_server_cert.pem
+ ---> ba7e82ac33ba
+Step 10/12 : COPY keys/turn_server_pkey.pem /root/coturn/turn_server_pkey.pem
+ ---> bc1d5d34b42d
+Step 11/12 : COPY coturn_finish /etc/service/coturn/finish
+ ---> 97b816ee7595
+Step 12/12 : COPY coturn_run /etc/service/coturn/run
+ ---> 9d8c84dcd84b
+Successfully built 9d8c84dcd84b
+Successfully tagged coturn:007
+Running dgoss test for coturn
+INFO: Starting goss container with strategy cp
+INFO: Creating docker container
+INFO: Copy goss files into container
+INFO: Copying files from /tmp/tmp.T3kBsPtZNu to 180ab3223eae5851e24ac9a9624d099f3ad8304c0c6c4aa4932f94e67f1550d1:/goss. Files available in temp dir: goss
+goss.yaml
++ cd /tmp/tmp.T3kBsPtZNu
++ docker cp . 180ab3223eae5851e24ac9a9624d099f3ad8304c0c6c4aa4932f94e67f1550d1:/goss
++ [[ -d /home/v/git/dockerfiles/coturn/../ci-docker-client/tools ]]
++ cd /home/v/git/dockerfiles/coturn/../ci-docker-client/tools
++ docker cp . 180ab3223eae5851e24ac9a9624d099f3ad8304c0c6c4aa4932f94e67f1550d1:/goss
++ set +x
+INFO: Starting docker container
+INFO: Stuff avilable in container after copy: /goss
+/goss/dgoss
+/goss/goss
+/goss/goss.yaml
+/goss/goss-linux-amd64
+/goss/goss_files
+/goss/goss_files/base
+/goss/goss_files/base/packages_up_to_date.sh
+/goss/goss_files/base/goss_base.yaml.
+INFO: Container ID: 180ab322
+INFO: Sleeping for 0.2
+INFO: Running Tests
+Command: /goss/goss_files/base/packages_up_to_date.sh: exit-status: matches expectation: [0]
+Command: /goss/goss_files/base/packages_up_to_date.sh: stdout: matches expectation: [0]
+
+
+Total Duration: 2.625s
+Count: 2, Failed: 0, Skipped: 0
+===================== START Log from goss ==========================
+
+====================== END Log from goss ===========================
+INFO: Deleting container
+REGISTRY IS dock.cct.ericsson.net dock.xcs.c3.ericsson.net 
+registry is dock.cct.ericsson.net
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                 Warning dock.cct.ericsson.net/coturn:007 not pushed to registry                                  #
+#                                                                                                                                  #
+####################################################################################################################################
+
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                Warning dock.cct.ericsson.net/coturn:latest not pushed to registry                                #
+#                                                                                                                                  #
+####################################################################################################################################
+
+registry is dock.xcs.c3.ericsson.net
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                                Warning dock.xcs.c3.ericsson.net/coturn:007 not pushed to registry                                #
+#                                                                                                                                  #
+####################################################################################################################################
+
+
+####################################################################################################################################
+#                                                                                                                                  #
+#                              Warning dock.xcs.c3.ericsson.net/coturn:latest not pushed to registry                               #
+#                                                                                                                                  #
+####################################################################################################################################
+
+v@v-desktop:~/git/dockerfiles/coturn$ pwd
+/home/v/git/dockerfiles/coturn
+v@v-desktop:~/git/dockerfiles/coturn$ cd ..
+v@v-desktop:~/git/dockerfiles$ 
+v@v-desktop:~/git/dockerfiles$ ls
+alertmanager              ci-snissh-client-node  kibana            postgres
+base                      coturn                 list_images.sh    prometheus
+blackbox-exporter         elasticd               list_versions.sh  pushgateway
+build                     elasticsearch          mongo             README.md
+build.sh                  filebeat               nginx             sshd
+_build_synapse_images.sh  go-app                 nginx-extras      synapse
+cadvisor                  goss                   nginx-reload      TODO.md
+ci-docker-client          grafana                node
+ci-node                   haproxy                node-app
+ci-snissh-client          java                   node-exporter
+v@v-desktop:~/git/dockerfiles$ cd ..
+v@v-desktop:~/git$ ls
+dockerfiles  turn-netsim  webrtc-E2E-Test
+v@v-desktop:~/git$ cd turn-netsim/
+v@v-desktop:~/git/turn-netsim$ ls
+add_route  build  coturn  netsim  README.md  synapse  webapp
+v@v-desktop:~/git/turn-netsim$ cd build/
+v@v-desktop:~/git/turn-netsim/build$ ls
+functions.sh
+v@v-desktop:~/git/turn-netsim/build$ cd ..
+v@v-desktop:~/git/turn-netsim$ ls
+add_route  build  coturn  netsim  README.md  synapse  webapp
+v@v-desktop:~/git/turn-netsim$ cd coturn/
+v@v-desktop:~/git/turn-netsim/coturn$ ls
+build.sh             Dockerfile  webapp         webapp_run
+docker-compose.yaml  link.sh     webapp_finish
+v@v-desktop:~/git/turn-netsim/coturn$ ./build.sh 
+Building dock.cct.ericsson.net/coturn-netsim:001
+Sending build context to Docker daemon  78.34kB
+Step 1/11 : FROM dock.cct.ericsson.net/coturn:latest
+ ---> 9d8c84dcd84b
+Step 2/11 : MAINTAINER Ken Dai <ken.dai@ericsson.com>
+ ---> Running in e1d07b71ba6b
+Removing intermediate container e1d07b71ba6b
+ ---> 74d09fc84a3d
+Step 3/11 : ENV COTURN_NETSIM_VERSION 1.0.0.0
+ ---> Running in 6c0cc22d527b
+Removing intermediate container 6c0cc22d527b
+ ---> 24b861798a1e
+Step 4/11 : LABEL com.ericsson.c3.coturn-netsim.version=$COTURN_NETSIM_VERSION
+ ---> Running in 27fcab44e449
+Removing intermediate container 27fcab44e449
+ ---> 149358074150
+Step 5/11 : RUN apt-get update     && apt-get install -y         iproute2         net-tools         iputils-ping         libpng12-dev         tcpdump &&         curl -sL https://deb.nodesource.com/setup_6.x | bash - &&         apt-get install -y nodejs
+ ---> Running in d450908f874d
+Hit:1 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu xenial InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libatm1 libc-dev-bin libc6-dev libgnutls-openssl27 libmnl0 libpcap0.8
+  libpng12-0 libxtables11 linux-libc-dev manpages manpages-dev zlib1g-dev
+Suggested packages:
+  iproute2-doc glibc-doc man-browser apparmor
+The following NEW packages will be installed:
+  iproute2 iputils-ping libatm1 libc-dev-bin libc6-dev libgnutls-openssl27
+  libmnl0 libpcap0.8 libpng12-0 libpng12-dev libxtables11 linux-libc-dev
+  manpages manpages-dev net-tools tcpdump zlib1g-dev
+0 upgraded, 17 newly installed, 0 to remove and 0 not upgraded.
+Need to get 7,939 kB of archives.
+After this operation, 29.2 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu xenial/main amd64 libatm1 amd64 1:2.5.1-1.5 [24.2 kB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial/main amd64 libmnl0 amd64 1.0.3-5 [12.0 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 iproute2 amd64 4.3.0-1ubuntu3.16.04.3 [522 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libgnutls-openssl27 amd64 3.4.10-4ubuntu1.4 [22.0 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial/main amd64 iputils-ping amd64 3:20121221-5ubuntu2 [52.7 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial/main amd64 libpng12-0 amd64 1.2.54-1ubuntu1 [116 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial/main amd64 libxtables11 amd64 1.6.0-2ubuntu3 [27.2 kB]
+Get:8 http://archive.ubuntu.com/ubuntu xenial/main amd64 net-tools amd64 1.60-26ubuntu1 [175 kB]
+Get:9 http://archive.ubuntu.com/ubuntu xenial/main amd64 libpcap0.8 amd64 1.7.4-2 [117 kB]
+Get:10 http://archive.ubuntu.com/ubuntu xenial/main amd64 manpages all 4.04-2 [1,087 kB]
+Get:11 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 tcpdump amd64 4.9.2-0ubuntu0.16.04.1 [387 kB]
+Get:12 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc-dev-bin amd64 2.23-0ubuntu10 [68.7 kB]
+Get:13 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 linux-libc-dev amd64 4.4.0-122.146 [850 kB]
+Get:14 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libc6-dev amd64 2.23-0ubuntu10 [2,079 kB]
+Get:15 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-2ubuntu4.1 [168 kB]
+Get:16 http://archive.ubuntu.com/ubuntu xenial/main amd64 libpng12-dev amd64 1.2.54-1ubuntu1 [184 kB]
+Get:17 http://archive.ubuntu.com/ubuntu xenial/main amd64 manpages-dev all 4.04-2 [2,048 kB]
+Fetched 7,939 kB in 0s (15.7 MB/s)
+Selecting previously unselected package libatm1:amd64.
+(Reading database ... 8946 files and directories currently installed.)
+Preparing to unpack .../libatm1_1%3a2.5.1-1.5_amd64.deb ...
+Unpacking libatm1:amd64 (1:2.5.1-1.5) ...
+Selecting previously unselected package libmnl0:amd64.
+Preparing to unpack .../libmnl0_1.0.3-5_amd64.deb ...
+Unpacking libmnl0:amd64 (1.0.3-5) ...
+Selecting previously unselected package iproute2.
+Preparing to unpack .../iproute2_4.3.0-1ubuntu3.16.04.3_amd64.deb ...
+Unpacking iproute2 (4.3.0-1ubuntu3.16.04.3) ...
+Selecting previously unselected package libgnutls-openssl27:amd64.
+Preparing to unpack .../libgnutls-openssl27_3.4.10-4ubuntu1.4_amd64.deb ...
+Unpacking libgnutls-openssl27:amd64 (3.4.10-4ubuntu1.4) ...
+Selecting previously unselected package iputils-ping.
+Preparing to unpack .../iputils-ping_3%3a20121221-5ubuntu2_amd64.deb ...
+Unpacking iputils-ping (3:20121221-5ubuntu2) ...
+Selecting previously unselected package libpng12-0:amd64.
+Preparing to unpack .../libpng12-0_1.2.54-1ubuntu1_amd64.deb ...
+Unpacking libpng12-0:amd64 (1.2.54-1ubuntu1) ...
+Selecting previously unselected package libxtables11:amd64.
+Preparing to unpack .../libxtables11_1.6.0-2ubuntu3_amd64.deb ...
+Unpacking libxtables11:amd64 (1.6.0-2ubuntu3) ...
+Selecting previously unselected package net-tools.
+Preparing to unpack .../net-tools_1.60-26ubuntu1_amd64.deb ...
+Unpacking net-tools (1.60-26ubuntu1) ...
+Selecting previously unselected package libpcap0.8:amd64.
+Preparing to unpack .../libpcap0.8_1.7.4-2_amd64.deb ...
+Unpacking libpcap0.8:amd64 (1.7.4-2) ...
+Selecting previously unselected package manpages.
+Preparing to unpack .../manpages_4.04-2_all.deb ...
+Unpacking manpages (4.04-2) ...
+Selecting previously unselected package tcpdump.
+Preparing to unpack .../tcpdump_4.9.2-0ubuntu0.16.04.1_amd64.deb ...
+Unpacking tcpdump (4.9.2-0ubuntu0.16.04.1) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../libc-dev-bin_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc-dev-bin (2.23-0ubuntu10) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../linux-libc-dev_4.4.0-122.146_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (4.4.0-122.146) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../libc6-dev_2.23-0ubuntu10_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.23-0ubuntu10) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../zlib1g-dev_1%3a1.2.8.dfsg-2ubuntu4.1_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
+Selecting previously unselected package libpng12-dev:amd64.
+Preparing to unpack .../libpng12-dev_1.2.54-1ubuntu1_amd64.deb ...
+Unpacking libpng12-dev:amd64 (1.2.54-1ubuntu1) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../manpages-dev_4.04-2_all.deb ...
+Unpacking manpages-dev (4.04-2) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+Setting up libatm1:amd64 (1:2.5.1-1.5) ...
+Setting up libmnl0:amd64 (1.0.3-5) ...
+Setting up iproute2 (4.3.0-1ubuntu3.16.04.3) ...
+Setting up libgnutls-openssl27:amd64 (3.4.10-4ubuntu1.4) ...
+Setting up iputils-ping (3:20121221-5ubuntu2) ...
+Setcap is not installed, falling back to setuid
+Setting up libpng12-0:amd64 (1.2.54-1ubuntu1) ...
+Setting up libxtables11:amd64 (1.6.0-2ubuntu3) ...
+Setting up net-tools (1.60-26ubuntu1) ...
+Setting up libpcap0.8:amd64 (1.7.4-2) ...
+Setting up manpages (4.04-2) ...
+Setting up tcpdump (4.9.2-0ubuntu0.16.04.1) ...
+Setting up libc-dev-bin (2.23-0ubuntu10) ...
+Setting up linux-libc-dev:amd64 (4.4.0-122.146) ...
+Setting up libc6-dev:amd64 (2.23-0ubuntu10) ...
+Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
+Setting up libpng12-dev:amd64 (1.2.54-1ubuntu1) ...
+Setting up manpages-dev (4.04-2) ...
+Processing triggers for libc-bin (2.23-0ubuntu10) ...
+
+## Installing the NodeSource Node.js 6.x LTS Boron repo...
+
+
+## Populating apt-get cache...
+
++ apt-get update
+Hit:1 http://archive.ubuntu.com/ubuntu xenial InRelease
+Hit:2 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease
+Reading package lists...
+
+## Confirming "xenial" is supported...
+
++ curl -sLf -o /dev/null 'https://deb.nodesource.com/node_6.x/dists/xenial/Release'
+
+## Adding the NodeSource signing key to your keyring...
+
++ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+OK
+
+## Creating apt sources list file for the NodeSource Node.js 6.x LTS Boron repo...
+
++ echo 'deb https://deb.nodesource.com/node_6.x xenial main' > /etc/apt/sources.list.d/nodesource.list
++ echo 'deb-src https://deb.nodesource.com/node_6.x xenial main' >> /etc/apt/sources.list.d/nodesource.list
+
+## Running `apt-get update` for you...
+
++ apt-get update
+Hit:1 http://archive.ubuntu.com/ubuntu xenial InRelease
+Hit:2 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu xenial-backports InRelease
+Get:5 https://deb.nodesource.com/node_6.x xenial InRelease [4,634 B]
+Get:6 https://deb.nodesource.com/node_6.x xenial/main amd64 Packages [1,003 B]
+Fetched 5,637 B in 0s (12.0 kB/s)
+Reading package lists...
+
+## Run `sudo apt-get install -y nodejs` to install Node.js 6.x LTS Boron and npm
+## You may also need development tools to build native addons:
+     sudo apt-get install gcc g++ make
+## To install the Yarn package manager, run:
+     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+     sudo apt-get update && sudo apt-get install yarn
+
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libpython-stdlib libpython2.7-minimal libpython2.7-stdlib python
+  python-minimal python2.7 python2.7-minimal
+Suggested packages:
+  python-doc python-tk python2.7-doc binutils binfmt-support
+The following NEW packages will be installed:
+  libpython-stdlib libpython2.7-minimal libpython2.7-stdlib nodejs python
+  python-minimal python2.7 python2.7-minimal
+0 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+Need to get 14.0 MB of archives.
+After this operation, 62.2 MB of additional disk space will be used.
+Get:1 https://deb.nodesource.com/node_6.x xenial/main amd64 nodejs amd64 6.14.2-1nodesource1 [10.1 MB]
+Get:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [340 kB]
+Get:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-minimal amd64 2.7.12-1ubuntu0~16.04.3 [1,261 kB]
+Get:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-minimal amd64 2.7.12-1~16.04 [28.1 kB]
+Get:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-stdlib amd64 2.7.12-1ubuntu0~16.04.3 [1,880 kB]
+Get:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7 amd64 2.7.12-1ubuntu0~16.04.3 [224 kB]
+Get:7 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-stdlib amd64 2.7.12-1~16.04 [7,768 B]
+Get:8 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python amd64 2.7.12-1~16.04 [137 kB]
+Fetched 14.0 MB in 1s (7,590 kB/s)
+Selecting previously unselected package libpython2.7-minimal:amd64.
+(Reading database ... 12842 files and directories currently installed.)
+Preparing to unpack .../libpython2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../python2.7-minimal_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python-minimal.
+Preparing to unpack .../python-minimal_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../python2.7_2.7.12-1ubuntu0~16.04.3_amd64.deb ...
+Unpacking python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Selecting previously unselected package libpython-stdlib:amd64.
+Preparing to unpack .../libpython-stdlib_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7-minimal (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package python.
+(Reading database ... 13589 files and directories currently installed.)
+Preparing to unpack .../python_2.7.12-1~16.04_amd64.deb ...
+Unpacking python (2.7.12-1~16.04) ...
+Selecting previously unselected package nodejs.
+Preparing to unpack .../nodejs_6.14.2-1nodesource1_amd64.deb ...
+Unpacking nodejs (6.14.2-1nodesource1) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up python2.7 (2.7.12-1ubuntu0~16.04.3) ...
+Setting up libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Setting up python (2.7.12-1~16.04) ...
+Setting up nodejs (6.14.2-1nodesource1) ...
+Removing intermediate container d450908f874d
+ ---> 7ace56e8556c
+Step 6/11 : WORKDIR /root/coturn/webapp
+Removing intermediate container f701e2304d72
+ ---> af6b9745d5c9
+Step 7/11 : COPY webapp/package.json /root/coturn/webapp/package.json
+ ---> 2bee4f47ebf0
+Step 8/11 : RUN npm install
+ ---> Running in 7d542a7eaaa6
+npm WARN deprecated babel-preset-es2015@6.24.1: 🙌  Thanks for using Babel: we recommend using babel-preset-env now: please read babeljs.io/env to update! 
+npm WARN deprecated gulp-util@3.0.8: gulp-util is deprecated - replace it, following the guidelines at https://medium.com/gulpjs/gulp-util-ca3b1f9f9ac5
+
+> cwebp-bin@4.0.0 postinstall /root/coturn/webapp/node_modules/cwebp-bin
+> node lib/install.js
+
+  ✔ cwebp pre-build test passed successfully
+
+> gifsicle@3.0.4 postinstall /root/coturn/webapp/node_modules/gifsicle
+> node lib/install.js
+
+  ✔ gifsicle pre-build test passed successfully
+
+> mozjpeg@4.1.1 postinstall /root/coturn/webapp/node_modules/mozjpeg
+> node lib/install.js
+
+  ✔ mozjpeg pre-build test passed successfully
+
+> optipng-bin@3.1.4 postinstall /root/coturn/webapp/node_modules/optipng-bin
+> node lib/install.js
+
+  ✔ optipng pre-build test passed successfully
+
+> pngquant-bin@4.0.0 postinstall /root/coturn/webapp/node_modules/pngquant-bin
+> node lib/install.js
+
+  ✔ pngquant pre-build test passed successfully
+universal-react@1.0.0 /root/coturn/webapp
+├─┬ babel-cli@6.26.0 
+│ ├─┬ babel-polyfill@6.26.0 
+│ │ ├── core-js@2.5.5 
+│ │ └── regenerator-runtime@0.10.5 
+│ ├─┬ babel-register@6.26.0 
+│ │ ├── core-js@2.5.5 
+│ │ ├─┬ home-or-tmp@2.0.0 
+│ │ │ └── os-tmpdir@1.0.2 
+│ │ └─┬ source-map-support@0.4.18 
+│ │   └── source-map@0.5.7 
+│ ├─┬ babel-runtime@6.26.0 
+│ │ ├── core-js@2.5.5 
+│ │ └── regenerator-runtime@0.11.1 
+│ ├─┬ chokidar@1.7.0 
+│ │ ├─┬ anymatch@1.3.2 
+│ │ │ └─┬ micromatch@2.3.11 
+│ │ │   ├── arr-diff@2.0.0 
+│ │ │   ├── array-unique@0.2.1 
+│ │ │   ├── braces@1.8.5 
+│ │ │   ├── expand-brackets@0.1.5 
+│ │ │   └── extglob@0.3.2 
+│ │ ├── async-each@1.0.1 
+│ │ ├── glob-parent@2.0.0 
+│ │ ├── inherits@2.0.3 
+│ │ ├─┬ is-binary-path@1.0.1 
+│ │ │ └── binary-extensions@1.11.0 
+│ │ ├─┬ is-glob@2.0.1 
+│ │ │ └── is-extglob@1.0.0 
+│ │ └─┬ readdirp@2.1.0 
+│ │   └── set-immediate-shim@1.0.1 
+│ ├── commander@2.15.1 
+│ ├── convert-source-map@1.5.1 
+│ ├── fs-readdir-recursive@1.1.0 
+│ ├─┬ glob@7.1.2 
+│ │ ├── fs.realpath@1.0.0 
+│ │ ├─┬ inflight@1.0.6 
+│ │ │ └── wrappy@1.0.2 
+│ │ └── once@1.4.0 
+│ ├── lodash@4.17.10 
+│ ├─┬ output-file-sync@1.1.2 
+│ │ ├── graceful-fs@4.1.11 
+│ │ └── object-assign@4.1.1 
+│ ├── path-is-absolute@1.0.1 
+│ ├── slash@1.0.0 
+│ ├── source-map@0.5.7 
+│ └─┬ v8flags@2.1.1 
+│   └── user-home@1.1.1 
+├─┬ babel-core@6.26.3 
+│ ├─┬ babel-code-frame@6.26.0 
+│ │ └── js-tokens@3.0.2 
+│ ├─┬ babel-generator@6.26.1 
+│ │ ├─┬ detect-indent@4.0.0 
+│ │ │ └─┬ repeating@2.0.1 
+│ │ │   └── is-finite@1.0.2 
+│ │ ├── jsesc@1.3.0 
+│ │ ├── source-map@0.5.7 
+│ │ └── trim-right@1.0.1 
+│ ├── babel-helpers@6.24.1 
+│ ├── babel-messages@6.23.0 
+│ ├── babel-template@6.26.0 
+│ ├─┬ babel-traverse@6.26.0 
+│ │ └── invariant@2.2.4 
+│ ├─┬ babel-types@6.26.0 
+│ │ └── to-fast-properties@1.0.3 
+│ ├── babylon@6.18.0 
+│ ├─┬ debug@2.6.9 
+│ │ └── ms@2.0.0 
+│ ├── json5@0.5.1 
+│ ├─┬ minimatch@3.0.4 
+│ │ └─┬ brace-expansion@1.1.11 
+│ │   ├── balanced-match@1.0.0 
+│ │   └── concat-map@0.0.1 
+│ ├── private@0.1.8 
+│ └── source-map@0.5.7 
+├─┬ babel-loader@6.4.1 
+│ ├─┬ find-cache-dir@0.1.1 
+│ │ ├── commondir@1.0.1 
+│ │ └─┬ pkg-dir@1.0.0 
+│ │   └─┬ find-up@1.1.2 
+│ │     └── path-exists@2.1.0 
+│ ├─┬ loader-utils@0.2.17 
+│ │ ├── big.js@3.2.0 
+│ │ ├── emojis-list@2.1.0 
+│ │ └── object-assign@4.1.1 
+│ ├─┬ mkdirp@0.5.1 
+│ │ └── minimist@0.0.8 
+│ └── object-assign@4.1.1 
+├─┬ babel-plugin-transform-es2015-modules-commonjs@6.26.2 
+│ └── babel-plugin-transform-strict-mode@6.24.1 
+├─┬ babel-plugin-transform-react-jsx@6.24.1 
+│ ├── babel-helper-builder-react-jsx@6.26.0 
+│ └── babel-plugin-syntax-jsx@6.18.0 
+├─┬ babel-preset-es2015@6.24.1 
+│ ├── babel-plugin-check-es2015-constants@6.22.0 
+│ ├── babel-plugin-transform-es2015-arrow-functions@6.22.0 
+│ ├── babel-plugin-transform-es2015-block-scoped-functions@6.22.0 
+│ ├── babel-plugin-transform-es2015-block-scoping@6.26.0 
+│ ├─┬ babel-plugin-transform-es2015-classes@6.24.1 
+│ │ ├── babel-helper-define-map@6.26.0 
+│ │ ├── babel-helper-function-name@6.24.1 
+│ │ ├── babel-helper-optimise-call-expression@6.24.1 
+│ │ └── babel-helper-replace-supers@6.24.1 
+│ ├── babel-plugin-transform-es2015-computed-properties@6.24.1 
+│ ├── babel-plugin-transform-es2015-destructuring@6.23.0 
+│ ├── babel-plugin-transform-es2015-duplicate-keys@6.24.1 
+│ ├── babel-plugin-transform-es2015-for-of@6.23.0 
+│ ├── babel-plugin-transform-es2015-function-name@6.24.1 
+│ ├── babel-plugin-transform-es2015-literals@6.22.0 
+│ ├── babel-plugin-transform-es2015-modules-amd@6.24.1 
+│ ├─┬ babel-plugin-transform-es2015-modules-systemjs@6.24.1 
+│ │ └── babel-helper-hoist-variables@6.24.1 
+│ ├── babel-plugin-transform-es2015-modules-umd@6.24.1 
+│ ├── babel-plugin-transform-es2015-object-super@6.24.1 
+│ ├─┬ babel-plugin-transform-es2015-parameters@6.24.1 
+│ │ ├── babel-helper-call-delegate@6.24.1 
+│ │ └── babel-helper-get-function-arity@6.24.1 
+│ ├── babel-plugin-transform-es2015-shorthand-properties@6.24.1 
+│ ├── babel-plugin-transform-es2015-spread@6.22.0 
+│ ├─┬ babel-plugin-transform-es2015-sticky-regex@6.24.1 
+│ │ └── babel-helper-regex@6.26.0 
+│ ├── babel-plugin-transform-es2015-template-literals@6.22.0 
+│ ├── babel-plugin-transform-es2015-typeof-symbol@6.23.0 
+│ ├─┬ babel-plugin-transform-es2015-unicode-regex@6.24.1 
+│ │ └─┬ regexpu-core@2.0.0 
+│ │   ├── regenerate@1.3.3 
+│ │   ├── regjsgen@0.2.0 
+│ │   └─┬ regjsparser@0.1.5 
+│ │     └── jsesc@0.5.0 
+│ └─┬ babel-plugin-transform-regenerator@6.26.0 
+│   └── regenerator-transform@0.10.1 
+├─┬ babel-preset-react@6.24.1 
+│ ├── babel-plugin-transform-react-display-name@6.25.0 
+│ ├── babel-plugin-transform-react-jsx-self@6.22.0 
+│ ├── babel-plugin-transform-react-jsx-source@6.22.0 
+│ └─┬ babel-preset-flow@6.23.0 
+│   └─┬ babel-plugin-transform-flow-strip-types@6.22.0 
+│     └── babel-plugin-syntax-flow@6.18.0 
+├─┬ babel-preset-react-hmre@1.1.1 
+│ ├── babel-plugin-react-transform@2.0.2 
+│ ├── react-transform-catch-errors@1.0.2 
+│ ├─┬ react-transform-hmr@1.0.4 
+│ │ ├─┬ global@4.3.2 
+│ │ │ ├─┬ min-document@2.19.0 
+│ │ │ │ └── dom-walk@0.1.1 
+│ │ │ └── process@0.5.2 
+│ │ └─┬ react-proxy@1.1.8 
+│ │   └── react-deep-force-update@1.1.1 
+│ └─┬ redbox-react@1.6.0 
+│   ├─┬ error-stack-parser@1.3.6 
+│   │ └── stackframe@0.3.1 
+│   ├── object-assign@4.1.1 
+│   ├─┬ prop-types@15.6.1 
+│   │ ├─┬ fbjs@0.8.16 
+│   │ │ └─┬ isomorphic-fetch@2.2.1 
+│   │ │   ├─┬ node-fetch@1.7.3 
+│   │ │   │ └── encoding@0.1.12 
+│   │ │   └── whatwg-fetch@2.0.4 
+│   │ └── object-assign@4.1.1 
+│   └─┬ sourcemapped-stacktrace@1.1.8 
+│     └── source-map@0.5.6 
+├── bluebird@3.5.1 
+├─┬ body-parser@1.18.2 
+│ ├── bytes@3.0.0 
+│ ├── content-type@1.0.4 
+│ ├── depd@1.1.2 
+│ ├── http-errors@1.6.3 
+│ ├── iconv-lite@0.4.19 
+│ ├─┬ on-finished@2.3.0 
+│ │ └── ee-first@1.1.1 
+│ ├── qs@6.5.1 
+│ ├─┬ raw-body@2.3.2 
+│ │ ├─┬ http-errors@1.6.2 
+│ │ │ ├── depd@1.1.1 
+│ │ │ └── setprototypeof@1.0.3 
+│ │ └── unpipe@1.0.0 
+│ └─┬ type-is@1.6.16 
+│   ├── media-typer@0.3.0 
+│   └─┬ mime-types@2.1.18 
+│     └── mime-db@1.33.0 
+├─┬ css-loader@0.27.3 
+│ ├─┬ css-selector-tokenizer@0.7.0 
+│ │ ├── cssesc@0.1.0 
+│ │ ├── fastparse@1.1.1 
+│ │ └── regexpu-core@1.0.0 
+│ ├─┬ cssnano@3.10.0 
+│ │ ├─┬ autoprefixer@6.7.7 
+│ │ │ ├─┬ browserslist@1.7.7 
+│ │ │ │ └── electron-to-chromium@1.3.45 
+│ │ │ ├── caniuse-db@1.0.30000833 
+│ │ │ ├── normalize-range@0.1.2 
+│ │ │ └── num2fraction@1.2.2 
+│ │ ├── decamelize@1.2.0 
+│ │ ├── defined@1.0.0 
+│ │ ├── object-assign@4.1.1 
+│ │ ├─┬ postcss-calc@5.3.1 
+│ │ │ ├── postcss-message-helpers@2.0.0 
+│ │ │ └─┬ reduce-css-calc@1.3.0 
+│ │ │   ├── balanced-match@0.4.2 
+│ │ │   ├── math-expression-evaluator@1.2.17 
+│ │ │   └─┬ reduce-function-call@1.0.2 
+│ │ │     └── balanced-match@0.4.2 
+│ │ ├─┬ postcss-colormin@2.2.2 
+│ │ │ └─┬ colormin@1.1.2 
+│ │ │   ├─┬ color@0.11.4 
+│ │ │   │ ├── clone@1.0.4 
+│ │ │   │ ├─┬ color-convert@1.9.1 
+│ │ │   │ │ └── color-name@1.1.3 
+│ │ │   │ └── color-string@0.3.0 
+│ │ │   └── css-color-names@0.0.4 
+│ │ ├── postcss-convert-values@2.6.1 
+│ │ ├── postcss-discard-comments@2.0.4 
+│ │ ├── postcss-discard-duplicates@2.1.0 
+│ │ ├── postcss-discard-empty@2.1.0 
+│ │ ├── postcss-discard-overridden@0.1.1 
+│ │ ├─┬ postcss-discard-unused@2.2.3 
+│ │ │ └── uniqs@2.0.0 
+│ │ ├─┬ postcss-filter-plugins@2.0.2 
+│ │ │ └─┬ uniqid@4.1.1 
+│ │ │   └── macaddress@0.2.8 
+│ │ ├── postcss-merge-idents@2.1.7 
+│ │ ├── postcss-merge-longhand@2.0.2 
+│ │ ├─┬ postcss-merge-rules@2.1.2 
+│ │ │ ├─┬ caniuse-api@1.6.1 
+│ │ │ │ ├── lodash.memoize@4.1.2 
+│ │ │ │ └── lodash.uniq@4.5.0 
+│ │ │ ├─┬ postcss-selector-parser@2.2.3 
+│ │ │ │ ├── flatten@1.0.2 
+│ │ │ │ ├── indexes-of@1.0.1 
+│ │ │ │ └── uniq@1.0.1 
+│ │ │ └── vendors@1.0.2 
+│ │ ├─┬ postcss-minify-font-values@1.0.5 
+│ │ │ └── object-assign@4.1.1 
+│ │ ├── postcss-minify-gradients@1.0.5 
+│ │ ├─┬ postcss-minify-params@1.2.2 
+│ │ │ └── alphanum-sort@1.0.2 
+│ │ ├── postcss-minify-selectors@2.1.1 
+│ │ ├── postcss-normalize-charset@1.1.1 
+│ │ ├─┬ postcss-normalize-url@3.0.8 
+│ │ │ ├── is-absolute-url@2.1.0 
+│ │ │ └─┬ normalize-url@1.9.1 
+│ │ │   ├── object-assign@4.1.1 
+│ │ │   ├── prepend-http@1.0.4 
+│ │ │   ├─┬ query-string@4.3.4 
+│ │ │   │ ├── object-assign@4.1.1 
+│ │ │   │ └── strict-uri-encode@1.1.0 
+│ │ │   └─┬ sort-keys@1.1.2 
+│ │ │     └── is-plain-obj@1.1.0 
+│ │ ├── postcss-ordered-values@2.2.3 
+│ │ ├── postcss-reduce-idents@2.4.0 
+│ │ ├── postcss-reduce-initial@1.0.1 
+│ │ ├── postcss-reduce-transforms@1.0.4 
+│ │ ├── postcss-svgo@2.1.6 
+│ │ ├── postcss-unique-selectors@2.0.2 
+│ │ ├── postcss-value-parser@3.3.0 
+│ │ └── postcss-zindex@2.2.0 
+│ ├── loader-utils@1.1.0 
+│ ├── lodash.camelcase@4.3.0 
+│ ├── object-assign@4.1.1 
+│ ├─┬ postcss@5.2.18 
+│ │ ├── js-base64@2.4.3 
+│ │ └── source-map@0.5.7 
+│ ├─┬ postcss-modules-extract-imports@1.1.0 
+│ │ └─┬ postcss@6.0.22 
+│ │   ├─┬ chalk@2.4.1 
+│ │   │ └── ansi-styles@3.2.1 
+│ │   ├── source-map@0.6.1 
+│ │   └─┬ supports-color@5.4.0 
+│ │     └── has-flag@3.0.0 
+│ ├─┬ postcss-modules-local-by-default@1.2.0 
+│ │ └─┬ postcss@6.0.22 
+│ │   ├─┬ chalk@2.4.1 
+│ │   │ └── ansi-styles@3.2.1 
+│ │   ├── source-map@0.6.1 
+│ │   └─┬ supports-color@5.4.0 
+│ │     └── has-flag@3.0.0 
+│ ├─┬ postcss-modules-scope@1.1.0 
+│ │ └─┬ postcss@6.0.22 
+│ │   ├─┬ chalk@2.4.1 
+│ │   │ └── ansi-styles@3.2.1 
+│ │   ├── source-map@0.6.1 
+│ │   └─┬ supports-color@5.4.0 
+│ │     └── has-flag@3.0.0 
+│ ├─┬ postcss-modules-values@1.3.0 
+│ │ ├── icss-replace-symbols@1.1.0 
+│ │ └─┬ postcss@6.0.22 
+│ │   ├─┬ chalk@2.4.1 
+│ │   │ └── ansi-styles@3.2.1 
+│ │   ├── source-map@0.6.1 
+│ │   └─┬ supports-color@5.4.0 
+│ │     └── has-flag@3.0.0 
+│ └── source-list-map@0.1.8 
+├── ejs@2.5.9 
+├─┬ eslint@2.13.1 
+│ ├─┬ chalk@1.1.3 
+│ │ ├── ansi-styles@2.2.1 
+│ │ ├── escape-string-regexp@1.0.5 
+│ │ ├── has-ansi@2.0.0 
+│ │ └── supports-color@2.0.0 
+│ ├─┬ concat-stream@1.6.2 
+│ │ ├── buffer-from@1.0.0 
+│ │ ├─┬ readable-stream@2.3.6 
+│ │ │ ├── core-util-is@1.0.2 
+│ │ │ ├── process-nextick-args@2.0.0 
+│ │ │ └── util-deprecate@1.0.2 
+│ │ └── typedarray@0.0.6 
+│ ├─┬ doctrine@1.5.0 
+│ │ └── isarray@1.0.0 
+│ ├─┬ es6-map@0.1.5 
+│ │ ├── d@1.0.0 
+│ │ ├─┬ es5-ext@0.10.42 
+│ │ │ └── next-tick@1.0.0 
+│ │ ├── es6-iterator@2.0.3 
+│ │ ├── es6-set@0.1.5 
+│ │ ├── es6-symbol@3.1.1 
+│ │ └── event-emitter@0.3.5 
+│ ├─┬ escope@3.6.0 
+│ │ ├── es6-weak-map@2.0.2 
+│ │ └── esrecurse@4.2.1 
+│ ├─┬ espree@3.5.4 
+│ │ └─┬ acorn-jsx@3.0.1 
+│ │   └── acorn@3.3.0 
+│ ├── estraverse@4.2.0 
+│ ├── esutils@2.0.2 
+│ ├─┬ file-entry-cache@1.3.1 
+│ │ ├─┬ flat-cache@1.3.0 
+│ │ │ ├── circular-json@0.3.3 
+│ │ │ ├─┬ del@2.2.2 
+│ │ │ │ ├─┬ globby@5.0.0 
+│ │ │ │ │ ├── arrify@1.0.1 
+│ │ │ │ │ ├── glob@7.1.2 
+│ │ │ │ │ └── object-assign@4.1.1 
+│ │ │ │ └── object-assign@4.1.1 
+│ │ │ └── write@0.2.1 
+│ │ └── object-assign@4.1.1 
+│ ├── glob@7.1.2 
+│ ├── globals@9.18.0 
+│ ├── ignore@3.3.8 
+│ ├── imurmurhash@0.1.4 
+│ ├─┬ inquirer@0.12.0 
+│ │ ├── ansi-escapes@1.4.0 
+│ │ ├── ansi-regex@2.1.1 
+│ │ ├─┬ cli-cursor@1.0.2 
+│ │ │ └─┬ restore-cursor@1.0.1 
+│ │ │   ├── exit-hook@1.1.1 
+│ │ │   └── onetime@1.1.0 
+│ │ ├── cli-width@2.2.0 
+│ │ ├─┬ figures@1.7.0 
+│ │ │ └── object-assign@4.1.1 
+│ │ ├─┬ readline2@1.0.1 
+│ │ │ ├── code-point-at@1.1.0 
+│ │ │ ├─┬ is-fullwidth-code-point@1.0.0 
+│ │ │ │ └── number-is-nan@1.0.1 
+│ │ │ └── mute-stream@0.0.5 
+│ │ ├── run-async@0.1.0 
+│ │ ├── rx-lite@3.1.2 
+│ │ ├── string-width@1.0.2 
+│ │ └── through@2.3.8 
+│ ├─┬ is-my-json-valid@2.17.2 
+│ │ ├── generate-function@2.0.0 
+│ │ ├─┬ generate-object-property@1.2.0 
+│ │ │ └── is-property@1.0.2 
+│ │ ├── is-my-ip-valid@1.0.0 
+│ │ ├── jsonpointer@4.0.1 
+│ │ └── xtend@4.0.1 
+│ ├── is-resolvable@1.1.0 
+│ ├─┬ js-yaml@3.7.0 
+│ │ ├─┬ argparse@1.0.10 
+│ │ │ └── sprintf-js@1.0.3 
+│ │ └── esprima@2.7.3 
+│ ├─┬ json-stable-stringify@1.0.1 
+│ │ └── jsonify@0.0.0 
+│ ├─┬ levn@0.3.0 
+│ │ ├── prelude-ls@1.1.2 
+│ │ └── type-check@0.3.2 
+│ ├─┬ optionator@0.8.2 
+│ │ ├── deep-is@0.1.3 
+│ │ ├── fast-levenshtein@2.0.6 
+│ │ └── wordwrap@1.0.0 
+│ ├── path-is-inside@1.0.2 
+│ ├── pluralize@1.2.1 
+│ ├── progress@1.1.8 
+│ ├─┬ require-uncached@1.0.3 
+│ │ ├─┬ caller-path@0.1.0 
+│ │ │ └── callsites@0.2.0 
+│ │ └── resolve-from@1.0.1 
+│ ├── shelljs@0.6.1 
+│ ├── strip-json-comments@1.0.4 
+│ ├─┬ table@3.8.3 
+│ │ ├── slice-ansi@0.0.4 
+│ │ └─┬ string-width@2.1.1 
+│ │   ├── is-fullwidth-code-point@2.0.0 
+│ │   └─┬ strip-ansi@4.0.0 
+│ │     └── ansi-regex@3.0.0 
+│ ├── text-table@0.2.0 
+│ └─┬ user-home@2.0.0 
+│   └── os-homedir@1.0.2 
+├─┬ eslint-plugin-jsdoc@2.4.0 
+│ └── comment-parser@0.4.2 
+├── eslint-plugin-promise@1.3.2 
+├─┬ eslint-plugin-react@6.10.3 
+│ ├─┬ array.prototype.find@2.0.4 
+│ │ ├─┬ define-properties@1.1.2 
+│ │ │ └── foreach@2.0.5 
+│ │ └─┬ es-abstract@1.11.0 
+│ │   ├─┬ es-to-primitive@1.1.1 
+│ │   │ ├── is-date-object@1.0.1 
+│ │   │ └── is-symbol@1.0.1 
+│ │   ├── is-callable@1.1.3 
+│ │   └── is-regex@1.0.4 
+│ ├─┬ has@1.0.1 
+│ │ └── function-bind@1.1.1 
+│ ├── jsx-ast-utils@1.4.1 
+│ └─┬ object.assign@4.1.0 
+│   ├── has-symbols@1.0.0 
+│   └── object-keys@1.0.11 
+├─┬ eslint-watch@2.1.14 
+│ ├─┬ chokidar@1.7.0 
+│ │ ├─┬ anymatch@1.3.2 
+│ │ │ └─┬ micromatch@2.3.11 
+│ │ │   ├── arr-diff@2.0.0 
+│ │ │   ├── array-unique@0.2.1 
+│ │ │   ├── braces@1.8.5 
+│ │ │   ├── expand-brackets@0.1.5 
+│ │ │   └── extglob@0.3.2 
+│ │ ├── glob-parent@2.0.0 
+│ │ └─┬ is-glob@2.0.1 
+│ │   └── is-extglob@1.0.0 
+│ └── keypress@0.2.1 
+├─┬ express@4.16.3 
+│ ├─┬ accepts@1.3.5 
+│ │ └── negotiator@0.6.1 
+│ ├── array-flatten@1.1.1 
+│ ├── content-disposition@0.5.2 
+│ ├── cookie@0.3.1 
+│ ├── cookie-signature@1.0.6 
+│ ├── encodeurl@1.0.2 
+│ ├── escape-html@1.0.3 
+│ ├── etag@1.8.1 
+│ ├── finalhandler@1.1.1 
+│ ├── fresh@0.5.2 
+│ ├── merge-descriptors@1.0.1 
+│ ├── methods@1.1.2 
+│ ├── parseurl@1.3.2 
+│ ├── path-to-regexp@0.1.7 
+│ ├─┬ proxy-addr@2.0.3 
+│ │ ├── forwarded@0.1.2 
+│ │ └── ipaddr.js@1.6.0 
+│ ├── range-parser@1.2.0 
+│ ├── safe-buffer@5.1.1 
+│ ├─┬ send@0.16.2 
+│ │ ├── destroy@1.0.4 
+│ │ └── mime@1.4.1 
+│ ├── serve-static@1.13.2 
+│ ├── setprototypeof@1.1.0 
+│ ├── statuses@1.4.0 
+│ ├── utils-merge@1.0.1 
+│ └── vary@1.1.2 
+├─┬ file-loader@0.10.1 
+│ └── loader-utils@1.1.0 
+├─┬ image-webpack-loader@3.6.0 
+│ ├─┬ imagemin@5.3.1 
+│ │ ├── file-type@4.4.0 
+│ │ ├─┬ globby@6.1.0 
+│ │ │ ├─┬ array-union@1.0.2 
+│ │ │ │ └── array-uniq@1.0.3 
+│ │ │ ├── glob@7.1.2 
+│ │ │ ├── object-assign@4.1.1 
+│ │ │ └─┬ pinkie-promise@2.0.1 
+│ │ │   └── pinkie@2.0.4 
+│ │ ├─┬ make-dir@1.2.0 
+│ │ │ └── pify@3.0.0 
+│ │ ├── p-pipe@1.2.0 
+│ │ ├── pify@2.3.0 
+│ │ └── replace-ext@1.0.0 
+│ ├─┬ imagemin-gifsicle@5.2.0 
+│ │ ├─┬ exec-buffer@3.2.0 
+│ │ │ ├─┬ execa@0.7.0 
+│ │ │ │ └─┬ cross-spawn@5.1.0 
+│ │ │ │   └─┬ lru-cache@4.1.2 
+│ │ │ │     ├── pseudomap@1.0.2 
+│ │ │ │     └── yallist@2.1.2 
+│ │ │ ├── p-finally@1.0.0 
+│ │ │ ├── pify@3.0.0 
+│ │ │ └─┬ tempfile@2.0.0 
+│ │ │   └── temp-dir@1.0.0 
+│ │ ├─┬ gifsicle@3.0.4 
+│ │ │ ├─┬ bin-build@2.2.0 
+│ │ │ │ ├─┬ archive-type@3.2.0 
+│ │ │ │ │ └── file-type@3.9.0 
+│ │ │ │ ├─┬ decompress@3.0.0 
+│ │ │ │ │ ├─┬ buffer-to-vinyl@1.1.0 
+│ │ │ │ │ │ ├── file-type@3.9.0 
+│ │ │ │ │ │ └── uuid@2.0.3 
+│ │ │ │ │ ├─┬ decompress-tar@3.1.0 
+│ │ │ │ │ │ ├── is-tar@1.0.0 
+│ │ │ │ │ │ ├─┬ strip-dirs@1.1.1 
+│ │ │ │ │ │ │ ├─┬ is-absolute@0.1.7 
+│ │ │ │ │ │ │ │ └── is-relative@0.1.3 
+│ │ │ │ │ │ │ ├── is-natural-number@2.1.1 
+│ │ │ │ │ │ │ ├── minimist@1.2.0 
+│ │ │ │ │ │ │ └── sum-up@1.0.3 
+│ │ │ │ │ │ ├─┬ tar-stream@1.6.0 
+│ │ │ │ │ │ │ ├── bl@1.2.2 
+│ │ │ │ │ │ │ ├─┬ buffer-alloc@1.1.0 
+│ │ │ │ │ │ │ │ ├── buffer-alloc-unsafe@0.1.1 
+│ │ │ │ │ │ │ │ └── buffer-fill@0.1.1 
+│ │ │ │ │ │ │ ├── end-of-stream@1.4.1 
+│ │ │ │ │ │ │ ├── fs-constants@1.0.0 
+│ │ │ │ │ │ │ └── to-buffer@1.1.1 
+│ │ │ │ │ │ ├─┬ through2@0.6.5 
+│ │ │ │ │ │ │ └─┬ readable-stream@1.0.34 
+│ │ │ │ │ │ │   ├── isarray@0.0.1 
+│ │ │ │ │ │ │   └── string_decoder@0.10.31 
+│ │ │ │ │ │ └─┬ vinyl@0.4.6 
+│ │ │ │ │ │   └── clone@0.2.0 
+│ │ │ │ │ ├─┬ decompress-tarbz2@3.1.0 
+│ │ │ │ │ │ ├── is-bzip2@1.0.0 
+│ │ │ │ │ │ ├─┬ seek-bzip@1.0.5 
+│ │ │ │ │ │ │ └─┬ commander@2.8.1 
+│ │ │ │ │ │ │   └── graceful-readlink@1.0.1 
+│ │ │ │ │ │ └─┬ vinyl@0.4.6 
+│ │ │ │ │ │   └── clone@0.2.0 
+│ │ │ │ │ ├─┬ decompress-targz@3.1.0 
+│ │ │ │ │ │ ├── is-gzip@1.0.0 
+│ │ │ │ │ │ └─┬ vinyl@0.4.6 
+│ │ │ │ │ │   └── clone@0.2.0 
+│ │ │ │ │ ├─┬ decompress-unzip@3.4.0 
+│ │ │ │ │ │ ├── is-zip@1.0.0 
+│ │ │ │ │ │ ├── stat-mode@0.2.2 
+│ │ │ │ │ │ ├── through2@2.0.3 
+│ │ │ │ │ │ └─┬ yauzl@2.9.1 
+│ │ │ │ │ │   ├── buffer-crc32@0.2.13 
+│ │ │ │ │ │   └─┬ fd-slicer@1.0.1 
+│ │ │ │ │ │     └── pend@1.2.0 
+│ │ │ │ │ ├─┬ stream-combiner2@1.1.1 
+│ │ │ │ │ │ └── duplexer2@0.1.4 
+│ │ │ │ │ ├─┬ vinyl-assign@1.2.1 
+│ │ │ │ │ │ └── object-assign@4.1.1 
+│ │ │ │ │ └─┬ vinyl-fs@2.4.4 
+│ │ │ │ │   ├─┬ duplexify@3.5.4 
+│ │ │ │ │   │ └── stream-shift@1.0.0 
+│ │ │ │ │   ├─┬ glob-stream@5.3.5 
+│ │ │ │ │   │ ├── extend@3.0.1 
+│ │ │ │ │   │ ├─┬ micromatch@2.3.11 
+│ │ │ │ │   │ │ ├── arr-diff@2.0.0 
+│ │ │ │ │   │ │ ├── array-unique@0.2.1 
+│ │ │ │ │   │ │ ├── braces@1.8.5 
+│ │ │ │ │   │ │ ├── expand-brackets@0.1.5 
+│ │ │ │ │   │ │ ├── extglob@0.3.2 
+│ │ │ │ │   │ │ ├── is-extglob@1.0.0 
+│ │ │ │ │   │ │ └── is-glob@2.0.1 
+│ │ │ │ │   │ ├── ordered-read-streams@0.3.0 
+│ │ │ │ │   │ ├─┬ to-absolute-glob@0.1.1 
+│ │ │ │ │   │ │ └── extend-shallow@2.0.1 
+│ │ │ │ │   │ └── unique-stream@2.2.1 
+│ │ │ │ │   ├─┬ gulp-sourcemaps@1.6.0 
+│ │ │ │ │   │ └── through2@2.0.3 
+│ │ │ │ │   ├── is-valid-glob@0.3.0 
+│ │ │ │ │   ├── lazystream@1.0.0 
+│ │ │ │ │   ├── lodash.isequal@4.5.0 
+│ │ │ │ │   ├── merge-stream@1.0.1 
+│ │ │ │ │   ├── object-assign@4.1.1 
+│ │ │ │ │   ├─┬ strip-bom-stream@1.0.0 
+│ │ │ │ │   │ └── first-chunk-stream@1.0.0 
+│ │ │ │ │   ├── through2@2.0.3 
+│ │ │ │ │   ├─┬ through2-filter@2.0.0 
+│ │ │ │ │   │ └── through2@2.0.3 
+│ │ │ │ │   └── vali-date@1.0.0 
+│ │ │ │ ├─┬ download@4.4.3 
+│ │ │ │ │ ├─┬ caw@1.2.0 
+│ │ │ │ │ │ ├─┬ get-proxy@1.1.0 
+│ │ │ │ │ │ │ └─┬ rc@1.2.7 
+│ │ │ │ │ │ │   ├── deep-extend@0.5.1 
+│ │ │ │ │ │ │   ├── ini@1.3.5 
+│ │ │ │ │ │ │   ├── minimist@1.2.0 
+│ │ │ │ │ │ │   └── strip-json-comments@2.0.1 
+│ │ │ │ │ │ ├── is-obj@1.0.1 
+│ │ │ │ │ │ ├── object-assign@3.0.0 
+│ │ │ │ │ │ └── tunnel-agent@0.4.3 
+│ │ │ │ │ ├─┬ filenamify@1.2.1 
+│ │ │ │ │ │ ├── filename-reserved-regex@1.0.0 
+│ │ │ │ │ │ ├── strip-outer@1.0.1 
+│ │ │ │ │ │ └── trim-repeated@1.0.0 
+│ │ │ │ │ ├─┬ got@5.7.1 
+│ │ │ │ │ │ ├─┬ create-error-class@3.0.2 
+│ │ │ │ │ │ │ └── capture-stack-trace@1.0.0 
+│ │ │ │ │ │ ├── is-redirect@1.0.0 
+│ │ │ │ │ │ ├── is-retry-allowed@1.1.0 
+│ │ │ │ │ │ ├── lowercase-keys@1.0.1 
+│ │ │ │ │ │ ├── node-status-codes@1.0.0 
+│ │ │ │ │ │ ├── object-assign@4.1.1 
+│ │ │ │ │ │ ├── timed-out@3.1.3 
+│ │ │ │ │ │ ├── unzip-response@1.0.2 
+│ │ │ │ │ │ └── url-parse-lax@1.0.0 
+│ │ │ │ │ ├─┬ gulp-decompress@1.2.0 
+│ │ │ │ │ │ └─┬ gulp-util@3.0.8 
+│ │ │ │ │ │   ├── array-differ@1.0.0 
+│ │ │ │ │ │   ├── beeper@1.1.1 
+│ │ │ │ │ │   ├── dateformat@2.2.0 
+│ │ │ │ │ │   ├─┬ fancy-log@1.3.2 
+│ │ │ │ │ │   │ ├─┬ ansi-gray@0.1.1 
+│ │ │ │ │ │   │ │ └── ansi-wrap@0.1.0 
+│ │ │ │ │ │   │ ├── color-support@1.1.3 
+│ │ │ │ │ │   │ └── time-stamp@1.1.0 
+│ │ │ │ │ │   ├─┬ gulplog@1.0.0 
+│ │ │ │ │ │   │ └── glogg@1.0.1 
+│ │ │ │ │ │   ├─┬ has-gulplog@0.1.0 
+│ │ │ │ │ │   │ └── sparkles@1.0.0 
+│ │ │ │ │ │   ├── lodash._reescape@3.0.0 
+│ │ │ │ │ │   ├── lodash._reevaluate@3.0.0 
+│ │ │ │ │ │   ├── lodash._reinterpolate@3.0.0 
+│ │ │ │ │ │   ├─┬ lodash.template@3.6.2 
+│ │ │ │ │ │   │ ├── lodash._basecopy@3.0.1 
+│ │ │ │ │ │   │ ├── lodash._basetostring@3.0.1 
+│ │ │ │ │ │   │ ├── lodash._basevalues@3.0.0 
+│ │ │ │ │ │   │ ├── lodash._isiterateecall@3.0.9 
+│ │ │ │ │ │   │ ├─┬ lodash.escape@3.2.0 
+│ │ │ │ │ │   │ │ └── lodash._root@3.0.1 
+│ │ │ │ │ │   │ ├─┬ lodash.keys@3.1.2 
+│ │ │ │ │ │   │ │ ├── lodash._getnative@3.9.1 
+│ │ │ │ │ │   │ │ ├── lodash.isarguments@3.1.0 
+│ │ │ │ │ │   │ │ └── lodash.isarray@3.0.4 
+│ │ │ │ │ │   │ ├── lodash.restparam@3.6.1 
+│ │ │ │ │ │   │ └── lodash.templatesettings@3.1.1 
+│ │ │ │ │ │   ├── minimist@1.2.0 
+│ │ │ │ │ │   ├─┬ multipipe@0.1.2 
+│ │ │ │ │ │   │ └─┬ duplexer2@0.0.2 
+│ │ │ │ │ │   │   └─┬ readable-stream@1.1.14 
+│ │ │ │ │ │   │     ├── isarray@0.0.1 
+│ │ │ │ │ │   │     └── string_decoder@0.10.31 
+│ │ │ │ │ │   ├── object-assign@3.0.0 
+│ │ │ │ │ │   ├── replace-ext@0.0.1 
+│ │ │ │ │ │   ├── through2@2.0.3 
+│ │ │ │ │ │   └── vinyl@0.5.3 
+│ │ │ │ │ ├── gulp-rename@1.2.2 
+│ │ │ │ │ ├── is-url@1.2.4 
+│ │ │ │ │ ├── object-assign@4.1.1 
+│ │ │ │ │ ├── read-all-stream@3.1.0 
+│ │ │ │ │ ├─┬ vinyl@1.2.0 
+│ │ │ │ │ │ ├── clone-stats@0.0.1 
+│ │ │ │ │ │ └── replace-ext@0.0.1 
+│ │ │ │ │ └─┬ ware@1.3.0 
+│ │ │ │ │   └─┬ wrap-fn@0.1.5 
+│ │ │ │ │     └── co@3.1.0 
+│ │ │ │ ├─┬ exec-series@1.0.3 
+│ │ │ │ │ ├── async-each-series@1.1.0 
+│ │ │ │ │ └── object-assign@4.1.1 
+│ │ │ │ ├─┬ tempfile@1.1.1 
+│ │ │ │ │ └── uuid@2.0.3 
+│ │ │ │ └─┬ url-regex@3.2.0 
+│ │ │ │   └── ip-regex@1.0.3 
+│ │ │ ├─┬ bin-wrapper@3.0.2 
+│ │ │ │ ├─┬ bin-check@2.0.0 
+│ │ │ │ │ └── executable@1.1.0 
+│ │ │ │ ├─┬ bin-version-check@2.1.0 
+│ │ │ │ │ ├─┬ bin-version@1.0.4 
+│ │ │ │ │ │ └─┬ find-versions@1.2.1 
+│ │ │ │ │ │   └── semver-regex@1.0.0 
+│ │ │ │ │ ├── minimist@1.2.0 
+│ │ │ │ │ ├── semver@4.3.6 
+│ │ │ │ │ └── semver-truncate@1.1.2 
+│ │ │ │ ├── each-async@1.1.1 
+│ │ │ │ ├── lazy-req@1.1.0 
+│ │ │ │ └── os-filter-obj@1.0.3 
+│ │ │ └─┬ logalot@2.1.0 
+│ │ │   └─┬ squeak@1.3.0 
+│ │ │     ├── console-stream@0.1.1 
+│ │ │     └─┬ lpad-align@1.1.2 
+│ │ │       └── longest@1.0.1 
+│ │ └── is-gif@1.0.0 
+│ ├─┬ imagemin-mozjpeg@6.0.0 
+│ │ ├── is-jpg@1.0.1 
+│ │ └── mozjpeg@4.1.1 
+│ ├─┬ imagemin-optipng@5.2.1 
+│ │ ├── is-png@1.1.0 
+│ │ └── optipng-bin@3.1.4 
+│ ├─┬ imagemin-pngquant@5.1.0 
+│ │ ├─┬ execa@0.10.0 
+│ │ │ ├─┬ cross-spawn@6.0.5 
+│ │ │ │ ├── nice-try@1.0.4 
+│ │ │ │ ├── path-key@2.0.1 
+│ │ │ │ ├── semver@5.5.0 
+│ │ │ │ ├─┬ shebang-command@1.2.0 
+│ │ │ │ │ └── shebang-regex@1.0.0 
+│ │ │ │ └─┬ which@1.3.0 
+│ │ │ │   └── isexe@2.0.0 
+│ │ │ ├── get-stream@3.0.0 
+│ │ │ ├── npm-run-path@2.0.2 
+│ │ │ ├── signal-exit@3.0.2 
+│ │ │ └── strip-eof@1.0.0 
+│ │ ├── is-stream@1.1.0 
+│ │ └─┬ pngquant-bin@4.0.0 
+│ │   ├─┬ bin-build@3.0.0 
+│ │   │ ├─┬ decompress@4.2.0 
+│ │   │ │ ├── decompress-tar@4.1.1 
+│ │   │ │ ├─┬ decompress-tarbz2@4.1.1 
+│ │   │ │ │ ├── file-type@6.2.0 
+│ │   │ │ │ └─┬ unbzip2-stream@1.2.5 
+│ │   │ │ │   └─┬ buffer@3.6.0 
+│ │   │ │ │     └── base64-js@0.0.8 
+│ │   │ │ ├── decompress-targz@4.1.1 
+│ │   │ │ ├─┬ decompress-unzip@4.0.1 
+│ │   │ │ │ ├── file-type@3.9.0 
+│ │   │ │ │ └─┬ get-stream@2.3.1 
+│ │   │ │ │   └── object-assign@4.1.1 
+│ │   │ │ └─┬ strip-dirs@2.1.0 
+│ │   │ │   └── is-natural-number@4.0.1 
+│ │   │ ├─┬ download@6.2.5 
+│ │   │ │ ├─┬ caw@2.0.1 
+│ │   │ │ │ ├─┬ get-proxy@2.1.0 
+│ │   │ │ │ │ └─┬ npm-conf@1.1.3 
+│ │   │ │ │ │   ├─┬ config-chain@1.1.11 
+│ │   │ │ │ │   │ └── proto-list@1.2.4 
+│ │   │ │ │ │   └── pify@3.0.0 
+│ │   │ │ │ ├─┬ isurl@1.0.0 
+│ │   │ │ │ │ ├─┬ has-to-string-tag-x@1.4.1 
+│ │   │ │ │ │ │ └── has-symbol-support-x@1.4.2 
+│ │   │ │ │ │ └── is-object@1.0.1 
+│ │   │ │ │ ├── tunnel-agent@0.6.0 
+│ │   │ │ │ └── url-to-options@1.0.1 
+│ │   │ │ ├─┬ ext-name@5.0.0 
+│ │   │ │ │ ├── ext-list@2.2.2 
+│ │   │ │ │ └── sort-keys-length@1.0.1 
+│ │   │ │ ├── file-type@5.2.0 
+│ │   │ │ ├─┬ filenamify@2.0.0 
+│ │   │ │ │ └── filename-reserved-regex@2.0.0 
+│ │   │ │ ├── get-stream@3.0.0 
+│ │   │ │ ├─┬ got@7.1.0 
+│ │   │ │ │ ├─┬ decompress-response@3.3.0 
+│ │   │ │ │ │ └── mimic-response@1.0.0 
+│ │   │ │ │ ├── duplexer3@0.1.4 
+│ │   │ │ │ ├── get-stream@3.0.0 
+│ │   │ │ │ ├── p-cancelable@0.3.0 
+│ │   │ │ │ └── timed-out@4.0.1 
+│ │   │ │ ├─┬ p-event@1.3.0 
+│ │   │ │ │ └── p-timeout@1.2.1 
+│ │   │ │ └── pify@3.0.0 
+│ │   │ ├─┬ execa@0.7.0 
+│ │   │ │ └── get-stream@3.0.0 
+│ │   │ └─┬ p-map-series@1.0.0 
+│ │   │   └── p-reduce@1.0.0 
+│ │   └─┬ execa@0.10.0 
+│ │     ├── cross-spawn@6.0.5 
+│ │     └── get-stream@3.0.0 
+│ ├─┬ imagemin-svgo@5.2.4 
+│ │ ├─┬ is-svg@2.1.0 
+│ │ │ └── html-comment-regex@1.1.1 
+��� │ └─┬ svgo@0.7.2 
+│ │   ├─┬ coa@1.0.4 
+│ │   │ └── q@1.5.1 
+│ │   ├── colors@1.1.2 
+│ │   ├─┬ csso@2.3.2 
+│ │   │ ├── clap@1.2.3 
+│ │   │ └── source-map@0.5.7 
+│ │   ├── sax@1.2.4 
+│ │   └── whet.extend@0.9.9 
+│ ├─┬ imagemin-webp@4.1.0 
+│ │ ├── cwebp-bin@4.0.0 
+│ │ └── is-cwebp-readable@2.0.1 
+│ ├── loader-utils@1.1.0 
+│ └── object-assign@4.1.1 
+├─┬ jasmine@2.99.0 
+│ ├── exit@0.1.2 
+│ ├── glob@7.1.2 
+│ └── jasmine-core@2.99.1 
+├─┬ react@0.14.9 
+│ ├─┬ envify@3.4.1 
+│ │ └─┬ jstransform@11.0.3 
+│ │   ├── base62@1.2.8 
+│ │   ├─┬ commoner@0.10.8 
+│ │   │ ├── detective@4.7.1 
+│ │   │ ├── glob@5.0.15 
+│ │   │ └─┬ recast@0.11.23 
+│ │   │   ├── ast-types@0.9.6 
+│ │   │   ├── esprima@3.1.3 
+│ │   │   └── source-map@0.5.7 
+│ │   ├── esprima-fb@15001.1.0-dev-harmony-fb 
+│ │   ├── object-assign@2.1.1 
+│ │   └─┬ source-map@0.4.4 
+│ │     └── amdefine@1.0.1 
+│ └─┬ fbjs@0.6.1 
+│   ├── core-js@1.2.7 
+│   ├── loose-envify@1.3.1 
+│   ├─┬ promise@7.3.1 
+│   │ └── asap@2.0.6 
+│   ├── ua-parser-js@0.7.17 
+│   └── whatwg-fetch@0.9.0 
+├── react-dom@0.14.9 
+├─┬ style-loader@0.14.1 
+│ └── loader-utils@1.1.0 
+├─┬ webpack@2.7.0 
+│ ├── acorn@5.5.3 
+│ ├─┬ acorn-dynamic-import@2.0.2 
+│ │ └── acorn@4.0.13 
+│ ├─┬ ajv@4.11.8 
+│ │ └── co@4.6.0 
+│ ├── ajv-keywords@1.5.1 
+│ ├── async@2.6.0 
+│ ├─┬ enhanced-resolve@3.4.1 
+│ │ └── object-assign@4.1.1 
+│ ├── interpret@1.1.0 
+│ ├── json-loader@0.5.7 
+│ ├── loader-runner@2.3.0 
+│ ├─┬ memory-fs@0.4.1 
+│ │ └─┬ errno@0.1.7 
+│ │   └── prr@1.0.1 
+│ ├─┬ node-libs-browser@2.1.0 
+│ │ ├── assert@1.4.1 
+│ │ ├─┬ browserify-zlib@0.2.0 
+│ │ │ └── pako@1.0.6 
+│ │ ├─┬ buffer@4.9.1 
+│ │ │ ├── base64-js@1.3.0 
+│ │ │ └── ieee754@1.1.11 
+│ │ ├─┬ console-browserify@1.1.0 
+│ │ │ └── date-now@0.1.4 
+│ │ ├── constants-browserify@1.0.0 
+│ │ ├─┬ crypto-browserify@3.12.0 
+│ │ │ ├─┬ browserify-cipher@1.0.1 
+│ │ │ │ ├─┬ browserify-aes@1.2.0 
+│ │ │ │ │ └── buffer-xor@1.0.3 
+│ │ │ │ ├─┬ browserify-des@1.0.1 
+│ │ │ │ │ └── des.js@1.0.0 
+│ │ │ │ └── evp_bytestokey@1.0.3 
+│ │ │ ├─┬ browserify-sign@4.0.4 
+│ │ │ │ ├── bn.js@4.11.8 
+│ │ │ │ ├── browserify-rsa@4.0.1 
+│ │ │ │ ├─┬ elliptic@6.4.0 
+│ │ │ │ │ ├── brorand@1.1.0 
+│ │ │ │ │ ├── hash.js@1.1.3 
+│ │ │ │ │ ├── hmac-drbg@1.0.1 
+│ │ │ │ │ └── minimalistic-crypto-utils@1.0.1 
+│ │ │ │ └─┬ parse-asn1@5.1.1 
+│ │ │ │   └── asn1.js@4.10.1 
+│ │ │ ├── create-ecdh@4.0.1 
+│ │ │ ├─┬ create-hash@1.2.0 
+│ │ │ │ ├── cipher-base@1.0.4 
+│ │ │ │ ├─┬ md5.js@1.3.4 
+│ │ │ │ │ └── hash-base@3.0.4 
+│ │ │ │ ├── ripemd160@2.0.2 
+│ │ │ │ └── sha.js@2.4.11 
+│ │ │ ├── create-hmac@1.1.7 
+│ │ │ ├─┬ diffie-hellman@5.0.3 
+│ │ │ │ └── miller-rabin@4.0.1 
+│ │ │ ├── pbkdf2@3.0.16 
+│ │ │ ├── public-encrypt@4.0.2 
+│ │ │ ├── randombytes@2.0.6 
+│ │ │ └── randomfill@1.0.4 
+│ │ ├── domain-browser@1.2.0 
+│ │ ├── events@1.1.1 
+│ │ ├── https-browserify@1.0.0 
+│ │ ├── os-browserify@0.3.0 
+│ │ ├── path-browserify@0.0.0 
+│ │ ├── process@0.11.10 
+│ │ ├── punycode@1.4.1 
+│ │ ├── querystring-es3@0.2.1 
+│ │ ├── stream-browserify@2.0.1 
+│ │ ├─┬ stream-http@2.8.1 
+│ │ │ ├── builtin-status-codes@3.0.0 
+│ │ │ └── to-arraybuffer@1.0.1 
+│ │ ├── string_decoder@1.1.1 
+│ │ ├─┬ timers-browserify@2.0.10 
+│ │ │ └── setimmediate@1.0.5 
+│ │ ├── tty-browserify@0.0.0 
+│ │ ├─┬ url@0.11.0 
+│ │ │ └── punycode@1.3.2 
+│ │ ├─┬ util@0.10.3 
+│ │ │ └── inherits@2.0.1 
+│ │ └─┬ vm-browserify@0.0.4 
+│ │   └── indexof@0.0.1 
+│ ├── source-map@0.5.7 
+│ ├─┬ supports-color@3.2.3 
+│ │ └── has-flag@1.0.0 
+│ ├── tapable@0.2.8 
+│ ├─┬ uglify-js@2.8.29 
+│ │ ├── source-map@0.5.7 
+│ │ ├── uglify-to-browserify@1.0.2 
+│ │ └─┬ yargs@3.10.0 
+│ │   ├── camelcase@1.2.1 
+│ │   ├─┬ cliui@2.1.0 
+│ │   │ ├─┬ center-align@0.1.3 
+│ │   │ │ ├── align-text@0.1.4 
+│ │   │ │ └── lazy-cache@1.0.4 
+│ │   │ ├── right-align@0.1.3 
+│ │   │ └── wordwrap@0.0.2 
+│ │   └── window-size@0.1.0 
+│ ├─┬ watchpack@1.6.0 
+│ │ └── neo-async@2.5.1 
+│ ├─┬ webpack-sources@1.1.0 
+│ │ ├── source-list-map@2.0.0 
+│ │ └── source-map@0.6.1 
+│ └─┬ yargs@6.6.0 
+│   ├── camelcase@3.0.0 
+│   ├─┬ cliui@3.2.0 
+│   │ └── wrap-ansi@2.1.0 
+│   ├── get-caller-file@1.0.2 
+│   ├─┬ os-locale@1.4.0 
+│   │ └─┬ lcid@1.0.0 
+│   │   └── invert-kv@1.0.0 
+│   ├─┬ read-pkg-up@1.0.1 
+│   │ └─┬ read-pkg@1.1.0 
+│   │   ├─┬ load-json-file@1.1.0 
+│   │   │ ├─┬ parse-json@2.2.0 
+│   │   │ │ └─┬ error-ex@1.3.1 
+│   │   │ │   └── is-arrayish@0.2.1 
+│   │   │ └─┬ strip-bom@2.0.0 
+│   │   │   └── is-utf8@0.2.1 
+│   │   └── path-type@1.1.0 
+│   ├── require-directory@2.1.1 
+│   ├── require-main-filename@1.0.1 
+│   ├── set-blocking@2.0.0 
+│   ├── which-module@1.0.0 
+│   ├── y18n@3.2.1 
+│   └─┬ yargs-parser@4.2.1 
+│     └── camelcase@3.0.0 
+├─┬ webpack-dev-middleware@1.12.2 
+│ ├── mime@1.6.0 
+│ └── time-stamp@2.0.0 
+├─┬ webpack-dev-server@2.11.2 
+│ ├── ansi-html@0.0.7 
+│ ├── array-includes@3.0.3 
+│ ├─┬ bonjour@3.5.0 
+│ │ ├── array-flatten@2.1.1 
+│ │ ├── deep-equal@1.0.1 
+│ │ ├── dns-equal@1.0.0 
+│ │ ├─┬ dns-txt@2.0.2 
+│ │ │ └── buffer-indexof@1.1.1 
+│ │ ├─┬ multicast-dns@6.2.3 
+│ │ │ ├── dns-packet@1.3.1 
+│ │ │ └── thunky@1.0.2 
+│ │ └── multicast-dns-service-types@1.1.0 
+│ ├─┬ chokidar@2.0.3 
+│ │ ├─┬ anymatch@2.0.0 
+│ │ │ └─┬ micromatch@3.1.10 
+│ │ │   ├── arr-diff@4.0.0 
+│ │ │   ├─┬ define-property@2.0.2 
+│ │ │   │ └─┬ is-descriptor@1.0.2 
+│ │ │   │   ├── is-accessor-descriptor@1.0.0 
+│ │ │   │   ├── is-data-descriptor@1.0.0 
+│ │ │   │   └── kind-of@6.0.2 
+│ │ │   ├─┬ extend-shallow@3.0.2 
+│ │ │   │ ├── assign-symbols@1.0.0 
+│ │ │   │ └─┬ is-extendable@1.0.1 
+│ │ │   │   └── is-plain-object@2.0.4 
+│ │ │   ├─┬ extglob@2.0.4 
+│ │ │   │ ├─┬ define-property@1.0.0 
+│ │ │   │ │ └─┬ is-descriptor@1.0.2 
+│ │ │   │ │   ├── is-accessor-descriptor@1.0.0 
+│ │ │   │ │   ├── is-data-descriptor@1.0.0 
+│ │ │   │ │   └── kind-of@6.0.2 
+│ │ │   │ ├─┬ expand-brackets@2.1.4 
+│ │ │   │ │ ├── define-property@0.2.5 
+│ │ │   │ │ ├── extend-shallow@2.0.1 
+│ │ │   │ │ └── posix-character-classes@0.1.1 
+│ │ │   │ └── extend-shallow@2.0.1 
+│ │ │   ├── fragment-cache@0.2.1 
+│ │ │   ├── kind-of@6.0.2 
+│ │ │   ├─┬ nanomatch@1.2.9 
+│ │ │   │ ├─┬ is-odd@2.0.0 
+│ │ │   │ │ └── is-number@4.0.0 
+│ │ │   │ ├── is-windows@1.0.2 
+│ │ │   │ └── kind-of@6.0.2 
+│ │ │   ├── object.pick@1.3.0 
+│ │ │   └── regex-not@1.0.2 
+│ │ ├─┬ braces@2.3.2 
+│ │ │ ├── arr-flatten@1.1.0 
+│ │ │ ├── array-unique@0.3.2 
+│ │ │ ├─┬ extend-shallow@2.0.1 
+│ │ │ │ └── is-extendable@0.1.1 
+│ │ │ ├─┬ fill-range@4.0.0 
+│ │ │ │ ├── extend-shallow@2.0.1 
+│ │ │ │ ├── is-number@3.0.0 
+│ │ │ │ ├── repeat-string@1.6.1 
+│ │ │ │ └── to-regex-range@2.1.1 
+│ │ │ ├── isobject@3.0.1 
+│ │ │ ├── repeat-element@1.1.2 
+│ │ │ ├─┬ snapdragon@0.8.2 
+│ │ │ │ ├─┬ base@0.11.2 
+│ │ │ │ │ ├─┬ cache-base@1.0.1 
+│ │ │ │ │ │ ├─┬ collection-visit@1.0.0 
+│ │ │ │ │ │ │ ├── map-visit@1.0.0 
+│ │ │ │ │ │ │ └── object-visit@1.0.1 
+│ │ │ │ │ │ ├── get-value@2.0.6 
+│ │ │ │ │ │ ├─┬ has-value@1.0.0 
+│ │ │ │ │ │ │ └─┬ has-values@1.0.0 
+│ │ │ │ │ │ │   └── kind-of@4.0.0 
+│ │ │ │ │ │ ├─┬ set-value@2.0.0 
+│ │ │ │ │ │ │ └── extend-shallow@2.0.1 
+│ │ │ │ │ │ ├── to-object-path@0.3.0 
+│ │ │ │ │ │ ├─┬ union-value@1.0.0 
+│ │ │ │ │ │ │ └─┬ set-value@0.4.3 
+│ │ │ │ │ │ │   └── extend-shallow@2.0.1 
+│ │ │ │ │ │ └─┬ unset-value@1.0.0 
+│ │ │ │ │ │   └─┬ has-value@0.3.1 
+│ │ │ │ │ │     ├── has-values@0.1.4 
+│ │ │ │ │ │     └── isobject@2.1.0 
+│ │ │ │ │ ├─┬ class-utils@0.3.6 
+│ │ │ │ │ │ ├── arr-union@3.1.0 
+│ │ │ │ │ │ ├── define-property@0.2.5 
+│ │ │ │ │ │ └─┬ static-extend@0.1.2 
+│ │ │ │ │ │   ├── define-property@0.2.5 
+│ │ │ │ │ │   └─┬ object-copy@0.1.0 
+│ │ │ │ │ │     ├── copy-descriptor@0.1.1 
+│ │ │ │ │ │     └── define-property@0.2.5 
+│ │ │ │ │ ├── component-emitter@1.2.1 
+│ │ │ │ │ ├─┬ define-property@1.0.0 
+│ │ │ │ │ │ └─┬ is-descriptor@1.0.2 
+│ │ │ │ │ │   ├── is-accessor-descriptor@1.0.0 
+│ │ │ │ │ │   ├── is-data-descriptor@1.0.0 
+│ │ │ │ │ │   └── kind-of@6.0.2 
+│ │ │ │ │ ├─┬ mixin-deep@1.3.1 
+│ │ │ │ │ │ └── is-extendable@1.0.1 
+│ │ │ │ │ └── pascalcase@0.1.1 
+│ │ │ │ ├─┬ define-property@0.2.5 
+│ │ │ │ │ └─┬ is-descriptor@0.1.6 
+│ │ │ │ │   ├── is-accessor-descriptor@0.1.6 
+│ │ │ │ │   ├── is-data-descriptor@0.1.4 
+│ │ │ │ │   └── kind-of@5.1.0 
+│ │ │ │ ├── extend-shallow@2.0.1 
+│ │ │ │ ├── map-cache@0.2.2 
+│ │ │ │ ├── source-map@0.5.7 
+│ │ │ │ ├─┬ source-map-resolve@0.5.1 
+│ │ │ │ │ ├── atob@2.1.1 
+│ │ │ │ │ ├── decode-uri-component@0.2.0 
+│ │ │ │ │ ├── resolve-url@0.2.1 
+│ │ │ │ │ ├── source-map-url@0.4.0 
+│ │ │ │ │ └── urix@0.1.0 
+│ │ │ │ └─┬ use@3.1.0 
+│ │ │ │   └── kind-of@6.0.2 
+│ │ │ ├─┬ snapdragon-node@2.1.1 
+│ │ │ │ ├─┬ define-property@1.0.0 
+│ │ │ │ │ └─┬ is-descriptor@1.0.2 
+│ │ │ │ │   ├── is-accessor-descriptor@1.0.0 
+│ │ │ │ │   ├── is-data-descriptor@1.0.0 
+│ │ │ │ │   └── kind-of@6.0.2 
+│ │ │ │ └── snapdragon-util@3.0.1 
+│ │ │ ├── split-string@3.1.0 
+│ │ │ └─┬ to-regex@3.0.2 
+│ │ │   └─┬ safe-regex@1.1.0 
+│ │ │     └── ret@0.1.15 
+│ │ ├─┬ glob-parent@3.1.0 
+│ │ │ ├── is-glob@3.1.0 
+│ │ │ └── path-dirname@1.0.2 
+│ │ ├─┬ is-glob@4.0.0 
+│ │ │ └── is-extglob@2.1.1 
+│ │ ├─┬ normalize-path@2.1.1 
+│ │ │ └── remove-trailing-separator@1.1.0 
+│ │ └── upath@1.0.5 
+│ ├─┬ compression@1.7.2 
+│ │ ├── compressible@2.0.13 
+│ │ └── on-headers@1.0.1 
+│ ├── connect-history-api-fallback@1.5.0 
+│ ├── debug@3.1.0 
+│ ├─┬ del@3.0.0 
+│ │ ├─┬ globby@6.1.0 
+│ │ │ ├── glob@7.1.2 
+│ │ │ ├── object-assign@4.1.1 
+│ │ │ └── pify@2.3.0 
+│ │ ├── is-path-cwd@1.0.0 
+│ │ ├─┬ is-path-in-cwd@1.0.1 
+│ │ │ └── is-path-inside@1.0.1 
+│ │ ├── p-map@1.2.0 
+│ │ ├── pify@3.0.0 
+│ │ └─┬ rimraf@2.6.2 
+│ │   └── glob@7.1.2 
+│ ├── html-entities@1.2.1 
+│ ├─┬ http-proxy-middleware@0.17.4 
+│ │ ├─┬ http-proxy@1.17.0 
+│ │ │ ├── eventemitter3@3.1.0 
+│ │ │ ├─┬ follow-redirects@1.4.1 
+│ │ │ │ └── debug@3.1.0 
+│ │ │ └── requires-port@1.0.0 
+│ │ ├── is-glob@3.1.0 
+│ │ └─┬ micromatch@2.3.11 
+│ │   ├── arr-diff@2.0.0 
+│ │   ├── array-unique@0.2.1 
+│ │   ├─┬ braces@1.8.5 
+│ │   │ ├─┬ expand-range@1.8.2 
+│ │   │ │ └─┬ fill-range@2.2.3 
+│ │   │ │   ├── is-number@2.1.0 
+│ │   │ │   ├── isobject@2.1.0 
+│ │   │ │   └─┬ randomatic@1.1.7 
+│ │   │ │     └── kind-of@4.0.0 
+│ │   │ └── preserve@0.2.0 
+│ │   ├─┬ expand-brackets@0.1.5 
+│ │   │ └── is-posix-bracket@0.1.1 
+│ │   ├─┬ extglob@0.3.2 
+│ │   │ └── is-extglob@1.0.0 
+│ │   ├── filename-regex@2.0.1 
+│ │   ├── is-extglob@1.0.0 
+│ │   ├── is-glob@2.0.1 
+│ │   ├─┬ kind-of@3.2.2 
+│ │   │ └── is-buffer@1.1.6 
+│ │   ├─┬ object.omit@2.0.1 
+│ │   │ └─┬ for-own@0.1.5 
+│ │   │   └── for-in@1.0.2 
+│ │   ├─┬ parse-glob@3.0.4 
+│ │   │ ├─┬ glob-base@0.3.0 
+│ │   │ │ ├── glob-parent@2.0.0 
+│ │   │ │ └─┬ is-glob@2.0.1 
+│ │   │ │   └── is-extglob@1.0.0 
+│ │   │ ├── is-dotfile@1.0.3 
+│ │   │ ├── is-extglob@1.0.0 
+│ │   │ └── is-glob@2.0.1 
+│ │   └─┬ regex-cache@0.4.4 
+│ │     └─┬ is-equal-shallow@0.1.3 
+│ │       └── is-primitive@2.0.0 
+│ ├─┬ import-local@1.0.0 
+│ │ ├─┬ pkg-dir@2.0.0 
+│ │ │ └─┬ find-up@2.1.0 
+│ │ │   └─┬ locate-path@2.0.0 
+│ │ │     ├─┬ p-locate@2.0.0 
+│ │ │     │ └─┬ p-limit@1.2.0 
+│ │ │     │   └── p-try@1.0.0 
+│ │ │     └── path-exists@3.0.0 
+│ │ └─┬ resolve-cwd@2.0.0 
+│ │   └── resolve-from@3.0.0 
+│ ├─┬ internal-ip@1.2.0 
+│ │ └─┬ meow@3.7.0 
+│ │   ├─┬ camelcase-keys@2.1.0 
+│ │   │ └── camelcase@2.1.1 
+│ │   ├─┬ loud-rejection@1.6.0 
+│ │   │ └─┬ currently-unhandled@0.4.1 
+│ │   │   └── array-find-index@1.0.2 
+│ │   ├── map-obj@1.0.1 
+│ │   ├── minimist@1.2.0 
+│ │   ├─┬ normalize-package-data@2.4.0 
+│ │   │ ├── hosted-git-info@2.6.0 
+│ │   │ ├─┬ is-builtin-module@1.0.0 
+│ │   │ │ └── builtin-modules@1.1.1 
+│ │   │ └─┬ validate-npm-package-license@3.0.3 
+│ │   │   ├─┬ spdx-correct@3.0.0 
+│ │   │   │ └── spdx-license-ids@3.0.0 
+│ │   │   └─┬ spdx-expression-parse@3.0.0 
+│ │   │     └── spdx-exceptions@2.1.0 
+│ │   ├── object-assign@4.1.1 
+│ │   ├─┬ redent@1.0.0 
+│ │   │ ├── indent-string@2.1.0 
+│ │   │ └─┬ strip-indent@1.0.1 
+│ │   │   └── get-stdin@4.0.1 
+│ │   └── trim-newlines@1.0.0 
+│ ├── ip@1.1.5 
+│ ├── killable@1.0.0 
+│ ├── loglevel@1.6.1 
+│ ├─┬ opn@5.3.0 
+│ │ └── is-wsl@1.1.0 
+│ ├─┬ portfinder@1.0.13 
+│ │ └── async@1.5.2 
+│ ├─┬ selfsigned@1.10.2 
+│ │ └── node-forge@0.7.1 
+│ ├─┬ serve-index@1.9.1 
+│ │ └── batch@0.6.1 
+│ ├─┬ sockjs@0.3.19 
+│ │ ├─┬ faye-websocket@0.10.0 
+│ │ │ └─┬ websocket-driver@0.7.0 
+│ │ │   ├── http-parser-js@0.4.12 
+│ │ │   └── websocket-extensions@0.1.3 
+│ │ └── uuid@3.2.1 
+│ ├─┬ sockjs-client@1.1.4 
+│ │ ├─┬ eventsource@0.1.6 
+│ │ │ └─┬ original@1.0.0 
+│ │ │   └─┬ url-parse@1.0.5 
+│ │ │     └── querystringify@0.0.4 
+│ │ ├── faye-websocket@0.11.1 
+│ │ ├── json3@3.3.2 
+│ │ └─┬ url-parse@1.4.0 
+│ │   └── querystringify@2.0.0 
+│ ├─┬ spdy@3.4.7 
+│ │ ├── handle-thing@1.2.5 
+│ │ ├── http-deceiver@1.2.7 
+│ │ ├── select-hose@2.0.0 
+│ │ └─┬ spdy-transport@2.1.0 
+│ │   ├── detect-node@2.0.3 
+│ │   ├── hpack.js@2.1.6 
+│ │   ├── obuf@1.1.2 
+│ │   └─┬ wbuf@1.7.3 
+│ │     └── minimalistic-assert@1.0.1 
+│ ├── strip-ansi@3.0.1 
+│ └─┬ supports-color@5.4.0 
+│   └── has-flag@3.0.0 
+├── webpack-error-notification@0.1.7 
+├─┬ webpack-hot-middleware@2.22.1 
+│ └── querystring@0.2.0 
+└── xmlhttprequest@1.8.0 
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.1.2 (node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.3: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules/babel-cli/node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.3: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.0.0 (node_modules/eslint-watch/node_modules/chokidar/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.3: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN universal-react@1.0.0 No repository field.
+npm WARN universal-react@1.0.0 license should be a valid SPDX license expression
+Removing intermediate container 7d542a7eaaa6
+ ---> 0618f0dd5d09
+Step 9/11 : COPY webapp /root/coturn/webapp
+ ---> 3879632e2994
+Step 10/11 : COPY webapp_run /etc/service/webapp/run
+ ---> e36ccb094c91
+Step 11/11 : COPY webapp_finish /etc/service/webapp/finish
+ ---> b54f6662f2b3
+Successfully built b54f6662f2b3
+Successfully tagged dock.cct.ericsson.net/coturn-netsim:001
+
+################################################################################
+#                                                                              #
+#    Warning dock.cct.ericsson.net/coturn-netsim:001 not pushed to registry    #
+#                                                                              #
+################################################################################
+
+
+################################################################################
+#                                                                              #
+#  Warning dock.cct.ericsson.net/coturn-netsim:latest not pushed to registry   #
+#                                                                              #
+################################################################################
+
+v@v-desktop:~/git/turn-netsim/coturn$ pwd
+/home/v/git/turn-netsim/coturn
+v@v-desktop:~/git/turn-netsim/coturn$ ls
+build.sh  docker-compose.yaml  Dockerfile  link.sh  webapp_finish
+v@v-desktop:~/git/turn-netsim/coturn$ docker images
+
+
+
+
+v@v-desktop:~/git/turn-netsim/coturn$ ls
+build.sh  docker-compose.yaml  Dockerfile  link.sh  webapp_finish
+v@v-desktop:~/git/turn-netsim/coturn$ docker-compose 
+The program 'docker-compose' is currently not installed. You can install it by typing:
+sudo apt install docker-compose
+v@v-desktop:~/git/turn-netsim/coturn$ sudo apt install docker-compose
+[sudo] password for v: 
+Reading package lists... Done
+v@v-desktop:~/git/turn-netsim/coturn$ ls
+build.sh  docker-compose.yaml  Dockerfile  link.sh  webapp_finish
+v@v-desktop:~/git/turn-netsim/coturn$ cat docker-compose.yaml 
+version: '2'
+
+services:
+  synapse-coturn:
+    image: dock.cct.ericsson.net/coturn-netsim:001
+    environment:
+       TURN_STATIC_AUTH_SECRET: north
+       EXTERNAL_TURN_URL: 'localhost:3443'
+    ports:
+      - "443:443"
+      - "3001:3000"
+    cap_add:
+      - NET_ADMIN
+v@v-desktop:~/git/turn-netsim/coturn$ docker-compose up -d
+Creating network "coturn_default" with the default driver
+Creating coturn_synapse-coturn_1
+v@v-desktop:~/git/turn-netsim/coturn$ docker ps
+CONTAINER ID        IMAGE                                     COMMAND             CREATED             STATUS              PORTS                                          NAMES
+1fafbb939b34        dock.cct.ericsson.net/coturn-netsim:001   "/sbin/our_init"    4 seconds ago       Up 4 seconds        0.0.0.0:443->443/tcp, 0.0.0.0:3001->3000/tcp   coturn_synapse-coturn_1
+v@v-desktop:~/git$ ls
+dockerfiles  turn-netsim  webrtc-E2E-Test
+v@v-desktop:~/git$ cd webrtc-E2E-Test/
+v@v-desktop:~/git/webrtc-E2E-Test$ ls
+dev  package.json  README.md  src  webpack.config.js
+v@v-desktop:~/git/webrtc-E2E-Test$ npm i
+npm WARN deprecated babel-preset-es2015@6.24.1: 🙌  Thanks for using Babel: we recommend using babel-preset-env now: please read babeljs.io/env to update! 
+npm ERR! Linux 4.13.0-39-generic
+npm ERR! argv "/usr/bin/node" "/usr/bin/npm" "i"
+npm ERR! node v6.11.4
+npm ERR! npm  v3.5.2
+npm ERR! code E404
+
+npm ERR! 404 Not found : @cct/libcct
+npm ERR! 404 
+npm ERR! 404  '@cct/libcct' is not in the npm registry.
+npm ERR! 404 You should bug the author to publish it (or use the name yourself!)
+npm ERR! 404 It was specified as a dependency of 'react-redux-template'
+npm ERR! 404 
+npm ERR! 404 Note that you can also install from a
+npm ERR! 404 tarball, folder, http url, or git url.
+
+npm ERR! Please include the following file with any support request:
+npm ERR!     /home/v/git/webrtc-E2E-Test/npm-debug.log
+v@v-desktop:~/git/webrtc-E2E-Test$ npm config set @cct:registry https://npm.cct.ericsson.net
+v@v-desktop:~/git/webrtc-E2E-Test$ npm i
+npm WARN deprecated babel-preset-es2015@6.24.1: 🙌  Thanks for using Babel: we recommend using babel-preset-env now: please read babeljs.io/env to update! 
+npm WARN prefer global node-gyp@3.6.2 should be installed with -g
+
+> node-sass@3.13.1 install /home/v/git/webrtc-E2E-Test/node_modules/node-sass
+> node scripts/install.js
+Downloading binary from https://github.com/sass/node-sass/releases/download/v3.13.1/linux-x64-48_binding.node
+Download complete  ] - :
+Binary saved to /home/v/git/webrtc-E2E-Test/node_modules/node-sass/vendor/linux-x64-48/binding.node
+Caching binary to /home/v/.npm/node-sass/3.13.1/linux-x64-48_binding.node
+
+> jss@9.8.1 postinstall /home/v/git/webrtc-E2E-Test/node_modules/jss
+> node -e "console.log('\u001b[35m\u001b[1mLove JSS? You can now support us on open collective:\u001b[22m\u001b[39m\n > \u001b[34mhttps://opencollective.com/jss/donate\u001b[0m')"
+
+Love JSS? You can now support us on open collective:
+ > https://opencollective.com/jss/donate
+
+> node-sass@3.13.1 postinstall /home/v/git/webrtc-E2E-Test/node_modules/node-sass
+> node scripts/build.js
+
+Binary found at /home/v/git/webrtc-E2E-Test/node_modules/node-sass/vendor/linux-x64-48/binding.node
+Testing binary
+Binary is fine
+react-redux-template@1.0.0 /home/v/git/webrtc-E2E-Test
+├── @cct/libcct@0.21.8 
+├─┬ babel-core@6.26.3 
+│ ├─┬ babel-code-frame@6.26.0 
+
+v@v-desktop:~/git/webrtc-E2E-Test$ npm run start
+
+> react-redux-template@1.0.0 start /home/v/git/webrtc-E2E-Test
+> webpack-dev-server
+
+ http://localhost:3000/
+webpack result is served from /
+content is served from ./src
+Hash: 61d3b21e4a1529469906
+Version: webpack 1.15.0
+Time: 6379ms
+           Asset     Size  Chunks             Chunk Names
+js/bundle.min.js  7.97 MB       0  [emitted]  main
+chunk    {0} js/bundle.min.js (main) 2.89 MB [rendered]
+    [0] multi main 40 bytes {0} [built]
+    [1] (webpack)/~/process/browser.js 5.42 kB {0} [built]
+    [2] ./~/core-js/modules/_export.js 1.6 kB {0} [built]
+    [3] ./~/react/react.js 56 bytes {0} [built]
+    [4] ./~/prop-types/index.js 956 bytes {0} [built]
+    [5] ./~/babel-runtime/helpers/extends.js 544 bytes {0} [built]
+    [6] ./~/babel-runtime/helpers/objectWithoutProperties.js 280 bytes {0} [built]
+    [7] ./~/fbjs/lib/invariant.js 1.51 kB {0} [built]
+    [8] ./~/fbjs/lib/warning.js 1.9 kB {0} [built]
+    [9] ./~/core-js/modules/_an-object.js 154 bytes {0} [built]
+   [10] ./~/core-js/modules/_global.js 369 bytes {0} [built]
+   [11] ./~/material-ui/styles/withStyles.js 14.8 kB {0} [built]
+   [12] ./~/classnames/index.js 1.1 kB {0} [built]
+   [13] ./~/core-js/modules/_fails.js 104 bytes {0} [built]
+
+
+
