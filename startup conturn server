@@ -1,0 +1,32 @@
+docker images
+
+v@v-desktop:~/git/turn-netsim/coturn$ docker-compose up -d
+
+docker ps
+
+v@v-desktop:~/git/webrtc-E2E-Test$ npm config set @cct:registry https://npm.cct.ericsson.net
+v@v-desktop:~/git/webrtc-E2E-Test$ npm i
+
+v@v-desktop:~/git/webrtc-E2E-Test$ npm run start
+
+=======================================================
+http://localhost:3001/credentials.json
+{"urls":"turn:localhost:443?transport=tcp","username":"2147483647:forever","credential":"kN8b7k8l2hXJq8T9B/W+ZXjG8Nc="}
+=======================================================
+Net Simulator Management: 
+http://localhost:3001
+========================================================
+Ericsson C3 Service Test Page:
+http://localhost:3000
+
+Settings:
+turn:localhost:443?transport=tcp
+2147483647:forever
+kN8b7k8l2hXJq8T9B/W+ZXjG8Nc=
+
+============================================================
+v@v-desktop:~/git/turn-netsim/coturn$ docker start 1fafbb939b34
+1fafbb939b34
+v@v-desktop:~/git/turn-netsim/coturn$ docker ps
+CONTAINER ID        IMAGE                                     COMMAND             CREATED             STATUS              PORTS                                          NAMES
+1fafbb939b34        dock.cct.ericsson.net/coturn-netsim:001   "/sbin/our_init"    About an hour ago   Up 3 seconds        0.0.0.0:443->443/tcp, 0.0.0.0:3001->3000/tcp   coturn_synapse-coturn_1
