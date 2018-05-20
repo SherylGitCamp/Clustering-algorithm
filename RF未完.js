@@ -13,11 +13,11 @@ function run(sparkSession, spark){
 	return new Promise(function(resolve, reject) {
 
     var root = process.env.EXAMPLE_ROOT || __dirname + "/.."
-  
+
     var savedModel = new spark.ml.classification.RandomForestClassificationModel()
         .load(root+"/model/saved_RF_gmm_0430_d4");
 
-    var test = 
+    var test = sparkSession.createDataFrame([{"60","1","1","1"}],{"RTT","PLIS","PL","NACK"});
 
     var prediction = savedModel.transform(test).then(resolve).catch(reject);
 
