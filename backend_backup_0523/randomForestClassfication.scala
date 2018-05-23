@@ -39,15 +39,17 @@ object randomForestClassfication {
 //      System.out.println(c.mkString(" "))
       val x = input.transpose
       val rdd = sc.parallelize(x).map(ys => Row(ys(0), ys(1), ys(2), ys(3)))
-      val df = rdd.toDF("RTT","PL","NACK","Plis")
-      df.show(20)
-    }
+      val dataframe = rdd.toDF("RTT","PL","NACK","Plis")
+      //dataframe.show(20)
+
 
     val assembler =  new VectorAssembler()
       .setInputCols(Array("RTT","PL","NACK","Plis"))
       .setOutputCol("features")
-    //val inputDF = assembler.transform()
+    val inputDF = assembler.transform(dataframe)
+      SavedModel.transform(inputDF).toDF().drop("features","rawPrediction","probability").show()
 
+    }
     //SavedModel.transform(inputDF).toDF().show()
 
 }
