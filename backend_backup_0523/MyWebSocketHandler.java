@@ -94,7 +94,7 @@ public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
         //data pre-processing
         String str[] = request.split(",");
-        int request_length = 10;
+        int request_length = str.length/4;
         int array[][] = new int[4][request_length];
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < request_length; j++){
