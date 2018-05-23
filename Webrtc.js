@@ -31,13 +31,17 @@ var RTT_array = new Array()
 var PL_array = new Array() 
 var NACK_array = new Array()
 var Plis_array = new Array()
+//var message_sent = new Array();   
 var old_PL = 0
 var old_NACK = 0
 var old_Plis = 0
 var current_Rtt = 0
-var current_PL = 0
-var current_NACK = 0
-var current_Plis = 0
+var current_read_PL = 0
+var current_read_NACK = 0
+var current_read_Plis = 0
+var true_PL = 0
+var true_NACK = 0
+var true_Plis = 0
 var socket;
 if(!window.WebSocket){
 	window.WebSocket = window.MozWebSocket;
@@ -49,7 +53,7 @@ if(window.WebSocket){
 		//var ta = document.getElementById('responseContent');
 		//ta.value += event.data + "\r\n";
 		console.log("receiving aray from backend:\r\n")
-		console.log(event.data)
+		//console.log(event.data)
 	};
 
 	socket.onopen = function(event){
@@ -127,44 +131,52 @@ class WebRTC extends Component {
 	  console.log ('waiting...')
 	  return         
 	  }
-          current_Rtt = Object.values(e)[31].googRtt
+          current_Rtt = parseInt(Object.values(e)[31].googRtt)
 	  console.log('ssrc_videoSender.RTT:', current_Rtt)	  
 	  RTT_array.push(current_Rtt)
 	  //console.log('RTT_array:', RTT_array)
          // send(RTT_array)
 
-          if (Object.values(e)[31].packetsLost >= old_PL){
-	  	current_PL = Object.values(e)[31].packetsLost - old_PL
+
+	  current_read_PL = parseInt(Object.values(e)[31].packetsLost)
+          if (current_read_PL >= old_PL){
+	  	true_PL = current_read_PL - old_PL
 	  }
 	  else{
-		current_PL = Object.values(e)[31].packetsLost
+		true_PL = current_read_PL
+		console.log("Shouldnot!!!")
 	  }
-	  console.log('ssrc_videoSender.PL:', current_PL)
-	  PL_array.push(current_PL)
-	  old_PL = Object.values(e)[31].packetsLost
+	  console.log('ssrc_videoSender.PL:', true_PL)
+	  PL_array.push(true_PL)
+	  old_PL = current_read_PL
 	  //console.log('PL_:', PL_array)
 
-	  if (Object.values(e)[31].googNacksReceived >= old_NACK){
-	  	current_NACK = Object.values(e)[31].googNacksReceived - old_NACK
+	
+	  current_read_NACK = parseInt(Object.values(e)[31].googNacksReceived)
+	  if (current_read_NACK >= old_NACK){
+	  	true_NACK = current_read_NACK - old_NACK
 	  }
 	  else{
-		current_NACK = Object.values(e)[31].googNacksReceived
+		true_NACK = current_read_NACK
+		console.log("Shouldnot!!!")
 	  }
-	  console.log('ssrc_videoSender.NACK:', current_NACK)
-	  NACK_array.push(current_NACK)
-	  old_NACK = Object.values(e)[31].googNacksReceived
+	  console.log('ssrc_videoSender.NACK:', true_NACK)
+	  NACK_array.push(true_NACK)
+	  old_NACK = current_read_NACK
 	  //console.log('NACK_array:', NACK_array)
 
 
-	  if (Object.values(e)[31].googPlisReceived >= old_Plis){
-	  	current_Plis = Object.values(e)[31].googPlisReceived - old_Plis
+	  current_read_Plis = parseInt(Object.values(e)[31].googPlisReceived)
+	  if (current_read_Plis >= old_Plis){
+	  	true_Plis = current_read_Plis - old_Plis
 	  }
 	  else{
-		current_Plis = Object.values(e)[31].googPlisReceived
+		true_Plis = current_read_Plis
+		console.log("Shouldnot!!!")
 	  }
-	  console.log('ssrc_videoSender.Plis:', current_Plis)	
-	  Plis_array.push(current_Plis)
-	  old_Plis = Object.values(e)[31].googPlisReceived
+	  console.log('ssrc_videoSender.Plis:', true_Plis)	
+	  Plis_array.push(true_Plis)
+	  old_Plis = current_read_Plis
 	  //console.log('Plis_array:', Plis_array)
    
         })
@@ -177,10 +189,13 @@ class WebRTC extends Component {
 	console.log('PL_:', PL_array)
 	console.log('NACK_array:', NACK_array)
 	console.log('Plis_array:', Plis_array)
-        send(RTT_array)
-	send(PL_array)
- 	send(NACK_array)
-	send(Plis_array)
+	//message_sent[0] = RTT_array
+	//message_sent[1] = PL_array
+	//message_sent[2] = NACK_array
+	//message_sent[3] = Plis_array
+	if(RTT_array.length == 10){
+        	send([RTT_array,PL_array,NACK_array,Plis_array])
+		}
 	RTT_array = []
 	PL_array = []
 	NACK_array = []
