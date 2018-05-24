@@ -18,14 +18,19 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
+import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
+import org.apache.spark.ml.classification.RandomForestClassificationModel;
+import org.apache.spark.sql.SQLContext;
 
 /**
  * 接收/处理/响应客户端websocket请求的核心业务处理类
  * @author liuyazhuang
  *
  */
-public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
+public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
+    RandomForestClassificationModel Readmodel = InitializedModel.SavedModel;
     private WebSocketServerHandshaker handshaker;
     private static final String WEB_SOCKET_URL = "ws://localhost:8888/websocket";
     //客户端与服务端创建连接的时候调用
@@ -102,7 +107,7 @@ public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
             }
         }
 
-        randomForestClassfication.createDF(array);
+        randomForestClassfication.createDF(array,Readmodel);
 
 
         TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
