@@ -18,19 +18,20 @@ import java.util.Scanner
 object randomForestClassfication {
 
 
-    val conf: SparkConf = new SparkConf()
-    .setMaster("local")
-    .setAppName("elastic_test")
-    .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
-    val sc: SparkContext = new SparkContext(conf)
+//    val conf: SparkConf = new SparkConf()
+//    .setMaster("local")
+//    .setAppName("elastic_test")
+//    .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+//    val sc: SparkContext = new SparkContext(conf)
+    val sc = InitializedModel.sc
     val sqlContext = new SQLContext(sc)
 
     import sqlContext.implicits._
 
     case class Row(i: Int, i1: Int, i2: Int, i3: Int)
-    val SavedModel = RandomForestClassificationModel.load("/home/v/Downloads/saved_RF_gmm_0430_d4")
 
-    def createDF(input:Array[Array[Int]]): Unit ={
+
+    def createDF(input:Array[Array[Int]],SavedModel: RandomForestClassificationModel): Unit ={
 //      val a:Array[Int] = input(0)
 //      val b:Array[Int] = input(1)
 //      val c:Array[Int] = input(2)
@@ -47,6 +48,7 @@ object randomForestClassfication {
       .setInputCols(Array("RTT","PL","NACK","Plis"))
       .setOutputCol("features")
     val inputDF = assembler.transform(dataframe)
+
       SavedModel.transform(inputDF).toDF().drop("features","rawPrediction","probability").show()
 
     }
