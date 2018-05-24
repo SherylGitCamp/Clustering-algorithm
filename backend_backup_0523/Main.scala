@@ -11,11 +11,13 @@ object Main {
     val bossGroup = new NioEventLoopGroup
     val workGroup = new NioEventLoopGroup
     try {
+      System.out.println("presetting: start loading model....")
+      new InitializedModel()
       val b = new ServerBootstrap
       b.group(bossGroup, workGroup)
       b.channel(classOf[NioServerSocketChannel])
       b.childHandler(new MyWebSocketChannelHandler)
-      System.out.println("服务端开启等待客户端连接....")
+      System.out.println("服务端开启等待客户端连接 ")
       val ch = b.bind(8888).sync.channel
       ch.closeFuture.sync
     } catch {
