@@ -1,16 +1,32 @@
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.stream.ChunkedWriteHandler;
-public class MyWebSocketChannelHandler extends ChannelInitializer<SocketChannel> {
+import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.Channel
+import io.netty.channel.EventLoopGroup
+import io.netty.channel.nio.NioEventLoopGroup
+import io.netty.channel.socket.nio.NioServerSocketChannel
 
-    @Override
-    protected void initChannel(SocketChannel e) {
-        e.pipeline().addLast("http-codec", new HttpServerCodec());
-        e.pipeline().addLast("aggregator", new HttpObjectAggregator(65536));
-        e.pipeline().addLast("http-chunked", new ChunkedWriteHandler());
-        e.pipeline().addLast("handler", new MyWebSocketHandler());
+
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    val bossGroup = new NioEventLoopGroup
+    val workGroup = new NioEventLoopGroup
+    try {
+      System.out.println("presetting: start loading model....")
+      new InitializedModel()
+      val b = new ServerBootstrap
+      b.group(bossGroup, workGroup)
+      b.channel(classOf[NioServerSocketChannel])
+      b.childHandler(new MyWebSocketChannelHandler)
+      System.out.println("服务端开启等待客户端连接 ")
+      val ch = b.bind(8888).sync.channel
+      ch.closeFuture.sync
+    } catch {
+      case e: Exception =>
+        e.printStackTrace()
+    } finally {
+      //优雅的退出程序
+      bossGroup.shutdownGracefully()
+      workGroup.shutdownGracefully()
     }
-
+  }
 }
