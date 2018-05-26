@@ -107,14 +107,15 @@ public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
             }
         }
 
-        randomForestClassfication.createDF(array,Readmodel);
+        int QoS_grade = randomForestClassfication.createDF(array,Readmodel);
+        System.out.println(QoS_grade + "\n");
 
-
-        TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
-                + ctx.channel().id()
-                + " ===>>> "
-                + request);
+//        TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()
+//                + ctx.channel().id()
+//                + " ===>>> "
+//                + request);
         //群发，服务端向每个连接上来的客户端群发消息
+        TextWebSocketFrame tws = new TextWebSocketFrame(String.valueOf(QoS_grade));
         NettyConfig.group.writeAndFlush(tws);
     }
     /**
