@@ -43,6 +43,14 @@ var true_PL = 0
 var true_NACK = 0
 var true_Plis = 0
 var socket;
+var Message_map = {
+		   	"6":"Good!", 
+		   	"5":"Recommend: Reduce the resolution to keep is stable.", 
+			"4":"Recommand: Drop the frame rate in the video OR Reduce the resolution to get a much clear and correct video in return.", 
+			"3":"Highly Recommend: Reduce the resolution to keep is stable.", 
+			"2":"Highly Recommend: Drop the frame rate in the video OR Reduce the resolution to get a much clear and correct video in return.", 
+			"1":"The current network situation is extremely horrible, we strongly recommend you drop the video completely to keep audio fluency.", 
+			"0":"if the situation keep a while, we recommend you reboot your conference."}
 if(!window.WebSocket){
 	window.WebSocket = window.MozWebSocket;
 }
@@ -50,8 +58,8 @@ if(!window.WebSocket){
 if(window.WebSocket){
 	socket = new WebSocket("ws://localhost:8888/websocket");
 	socket.onmessage = function(event){
-		//var ta = document.getElementById('responseContent');
-		//ta.value += event.data + "\r\n";
+		var ta = document.getElementById('responseContent');
+		ta.value = Message_map[event.data] + "\r\n";
 		console.log("receiving aray from backend:\r\n")
 		//console.log(event.data)
 	};
@@ -112,7 +120,7 @@ class WebRTC extends Component {
           //console.log('RTT is:', e['Conn-audio-1-0'].googRtt)
 	   
           // report the RTT to storage!
-          if (e['Conn-audio-1-0'].googRtt < 3000 && e['Conn-audio-1-0'].googRtt > 0) {
+          if (e['Conn-audio-1-0'].googRtt < 30000 && e['Conn-audio-1-0'].googRtt > 0) {
              this.props.reportData({
                 rtt: e['Conn-audio-1-0'].googRtt,
                 // the bitrate (B/s)
@@ -400,11 +408,16 @@ class WebRTC extends Component {
             <video ref="self2" className="Video"></video>
             <video ref="remote1" className="Video"></video>
             <video ref="remote2" className="Video"></video><br/>
+	  <form>
+	    <hr color="red"/>
+            <h2>Remedy Discription:</h2>
+	    <textarea id = "responseContent"  rows = "4" cols = "50" readOnly autoFocus></textarea>    	  
+	  </form>
           </ul>
       );
     }
 }
-
+//  <textarea id = "responseContent" height="210" width="540"></textarea>
 // Get apps state and pass it as props to UserList
 //      > whenever state changes, the UserList will automatically re-render
 function mapStateToProps(state) {
