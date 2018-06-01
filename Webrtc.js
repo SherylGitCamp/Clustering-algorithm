@@ -1,6 +1,7 @@
 "use strict"
 
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {selectUser, reportData} from '../actions/index'
@@ -26,6 +27,7 @@ const defaultIceUrl = 'turn:localhost:443?transport=tcp'
 const defaultIceUser = '2147483647:forever'
 const defaultIcePass = 'kN8b7k8l2hXJq8T9B/W+ZXjG8Nc='
 const defaultServerUrl = 'https://demo.c3.ericsson.net'
+const QoS = 1
 
 var RTT_array = new Array()
 var PL_array = new Array() 
@@ -57,7 +59,9 @@ if(!window.WebSocket){
 
 if(window.WebSocket){
 	socket = new WebSocket("ws://localhost:8888/websocket");
-	socket.onmessage = function(event){
+	socket.onmessage = function(event){		
+		var qos = document.getElementById('qosContent');
+	        qos.value = event.data + "\r\n";
 		var ta = document.getElementById('responseContent');
 		ta.value = Message_map[event.data] + "\r\n";
 		console.log("receiving aray from backend:\r\n")
@@ -105,8 +109,9 @@ class WebRTC extends Component {
 
       this._dataCount = 0
       this._bytesReceived = 0
+      this.qos = QoS
     }
-      
+
     timeout() {
       this._handleTimeout = setTimeout(this.timeout, 1000)
       if(this.client1 && this.client1.rooms[0]) {
@@ -410,9 +415,15 @@ class WebRTC extends Component {
             <video ref="remote2" className="Video"></video><br/>
 	  <form>
 	    <hr color="red"/>
+	    <h2>real-time score for the video quality:</h2>
+	    <mark><li><textarea id = "qosContent" color="red" rows = "2" cols = "2" readOnly autoFocus></textarea></li>
+		  Note:"6" stand for the best quality level,"0" stand for the worst </mark>  
             <h2>Remedy Discription:</h2>
 	    <textarea id = "responseContent"  rows = "4" cols = "50" readOnly autoFocus></textarea>    	  
 	  </form>
+	  <Button color="primary">Drop frame rate</Button>
+	  <Button color="primary">reduce resolution</Button>
+	  <Button color="primary">drop video</Button>
           </ul>
       );
     }
