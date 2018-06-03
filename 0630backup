@@ -1,0 +1,487 @@
+"use strict"
+
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {selectUser, reportData} from '../actions/index'
+import Button from 'material-ui/Button'
+import {DeviceSource} from '@cct/libcct'
+import {Client, Auth} from '@cct/libcct'
+import { withStyles } from 'material-ui/styles'
+import TextField from 'material-ui/TextField';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
+
+const defaultIceUrl = 'turn:turn.demo.c3.ericsson.net:443?transport=tcp'
+const defaultIceUser = 'c3-turn'
+const defaultIcePass = 'see-three'
+const defaultServerUrl = 'https://demo.c3.ericsson.net'
+/*
+const default_resolution = {
+	video:{
+	  height:{exact:450},
+	  width:{exact:450},		
+	}
+}
+const resolution_300 = {
+	video:{
+	  height:{exact:300},
+	  width:{exact:300},
+//	  frameRate:current_constraints.video[frameRate]			
+	}
+}
+const resolution_400 = {
+	video:{
+	  height:{exact:400},
+	  width:{exact:400},		
+	}
+}
+const resolution_200 = {
+	video:{
+	  height:{exact:200},
+	  width:{exact:200},		
+	}
+}
+
+const fps_5 = {
+	video:{
+	  frameRate:5		
+	}
+}
+const fps_10 = {
+	video:{
+	  frameRate:10		
+	}
+}
+const fps_15 = {
+	video:{
+	  frameRate:15		
+	}
+}
+const default_fps = {
+	video:{
+	  frameRate:20		
+	}
+}
+*/
+//var current_constraints
+
+/*window.onload= function(){
+	var reloading = sessionStorage.getItem("reloading");
+	if (reloading) {
+	sessionStorage.removeItem("reloading");
+	console.log("wait");
+	var rtc = new WebRTC();
+	rtc.resolution_setting_300();
+	connect(mapStateToProps, matchDispatchToProps)(WebRTC);
+//	rtc.handleClickStart();
+	/*var rtc = new WebRTC(); 
+	rtc.render =
+	rtc.resolution_setting_300();
+	rtc.handleClickStart();
+	}
+    }
+*/
+
+class WebRTC extends Component {
+    constructor(props) {
+      super(props)
+//      this.state = this.getInitialState();
+//     this.reload = this.reload.bind(this)
+      this.reset300 = this.reset300.bind(this)
+      this.reset400 = this.reset400.bind(this)
+      this.reset200 = this.reset200.bind(this)
+      this.reset5 = this.reset5.bind(this)
+      this.reset10 = this.reset10.bind(this)
+      this.reset15 = this.reset15.bind(this)
+      this.mute = this.mute.bind(this)
+      this.unmute = this.unmute.bind(this)
+      this.handleClickStart = this.handleClickStart.bind(this)
+      this.handleClickStop = this.handleClickStop.bind(this)
+ //     this.default_resolution_setting = this.default_resolution_setting.bind(this) 
+/*      this.resolution_setting_300 = this.resolution_setting_300.bind(this) 
+      this.resolution_setting_400 = this.resolution_setting_400.bind(this) 
+      this.resolution_setting_500 = this.resolution_setting_500.bind(this) 
+      this.fps_setting_5 = this.fps_setting_5.bind(this)
+      this.fps_setting_10 = this.fps_setting_10.bind(this)
+      this.fps_setting_15 = this.fps_setting_15.bind(this)  
+  */
+      this.joinCallRoom = this.joinCallRoom.bind(this)
+      this.setupCall = this.setupCall.bind(this)
+      this.handleClickSettings = this.handleClickSettings.bind(this)
+      this.handleCloseSettings = this.handleCloseSettings.bind(this)
+      this.handleServerUrlChange = this.handleServerUrlChange.bind(this)
+      this.handleIceServerChange = this.handleIceServerChange.bind(this)
+      this.handleIceUserChange = this.handleIceUserChange.bind(this)
+      this.handleIcePasswdChange = this.handleIcePasswdChange.bind(this)
+      this.timeout = this.timeout.bind(this)
+      this._dataCount = 0
+      this._bytesReceived = 0
+    }
+/*      getInitialState() {
+        const initialState = {
+        };
+	return initialState;
+      }
+
+	reload() {
+        console.log('reload')
+	window.location.reload()
+	}
+*/
+
+    
+
+    timeout() {
+      this._handleTimeout = setTimeout(this.timeout, 500)
+      if(this.client1 && this.client1.rooms[0]) {
+        this.client1.rooms[0].calls[this.client2.user.id]._peerConnection.getStats().then(e => {
+          console.log(e)
+          if(!e['Conn-audio-1-0']) {
+            console.log('Cannot read metrics from the browser, please check the connection')
+            return
+          }
+          console.log('RTT is:', e['Conn-audio-1-0'].googRtt)
+          // report the RTT to storage!
+          if (e['Conn-audio-1-0'].googRtt < 3000 && e['Conn-audio-1-0'].googRtt > 0) {
+             this.props.reportData({
+                rtt: e['Conn-audio-1-0'].googRtt,
+                // the bitrate (B/s)
+                bitrate: (e['Conn-audio-1-0'].bytesReceived - this._bytesReceived) / 0.5,
+                count: this._dataCount
+             })
+             this._bytesReceived = e['Conn-audio-1-0'].bytesReceived
+             this._dataCount += 1
+          }
+        })
+      }
+    }
+ 
+    setupCall(rooms) {
+      this.source1 = new DeviceSource()
+      this.source2 = new DeviceSource()
+      this.source1.connect(this.refs.self1)
+      this.source2.connect(this.refs.self2)
+      this.constraints = {
+	video:{
+	  height:{exact:450},
+	  width:{exact:450},
+	  frameRate: 20	
+	},
+	audio:true,
+      }
+
+      this.call1 = rooms[0].startCall(this.client2.user.id)
+      this.call1.setLocalSource('main', this.source1)
+      this.call1.getRemoteSource('main').connect(this.refs.remote1)
+
+      this.call2 = rooms[1].startCall(this.client1.user.id)
+      this.call2.setLocalSource('main', this.source2)
+      this.call2.getRemoteSource('main').connect(this.refs.remote2)
+
+      this._start = true
+      setTimeout(() => {
+        this.timeout()
+      }, 500)
+    }
+
+    joinCallRoom() {
+      console.log('Joining the same room')
+      return Promise.all([
+        this.client1.createRoom({
+          invite: this.client2.user,
+        }),
+        this.client2.once('invite').then(function (room) {
+          return room.join()
+        }),
+      ])
+    }
+/*
+    default_resolution_setting(){
+        console.log('resolution_setting default...')
+	current_constraints = default_resolution
+    }
+    resolution_setting_300(){
+        console.log('resolution_setting 300...')
+	current_constraints = resolution_300
+    }
+    resolution_setting_400(){
+        console.log('resolution_setting 400...')
+	current_constraints = resolution_400
+    }
+    resolution_setting_500(){
+        console.log('resolution_setting 500...')
+	current_constraints = resolution_500
+    }
+    fps_setting_5(){
+        console.log('fps_setting 5...')
+	current_constraints =fps_5
+    }
+    fps_setting_10(){
+        console.log('fps_setting 10...')
+	current_constraints = fps_10
+    }
+    fps_setting_15(){
+        console.log('fps_setting 15...')
+	current_constraints = fps_15
+    }
+    default_fps_setting(){
+        console.log('fps_setting 20...')
+	current_constraints = default_fps
+    }
+*/
+    handleClickStop() {
+     if(this._start) {
+        this.call1.getRemoteSource('main').disconnect()
+        this.call2.getRemoteSource('main').disconnect()
+        this.call1.close()
+        this.call2.close()
+        this.source1 && this.source1.disconnect()
+        this.source2 && this.source2.disconnect()
+        this.source1 = null
+        this.source2 = null
+        this.client1 = null
+        this.client2 = null
+        clearTimeout(this._handleTimeout)
+	this._start = false	
+     }
+	this.state = null
+	console.log(this.state)
+//	this.setState(this.getInitialState());
+    }
+
+    handleClickStart() {
+      var iceServer = [{
+        urls: localStorage.getItem('iceServerUrl') || defaultIceUrl,
+        username: localStorage.getItem('iceUser') || defaultIceUser,
+        credential: localStorage.getItem('icePasswd') || defaultIcePass,
+      }]
+      console.log('iceServer:', iceServer)
+      this.client1 = new Client({
+        iceServers: iceServer,
+        iceCandidateFilter(info) {
+          return info.type === 'relay'
+        }
+      })
+      this.client2 = new Client({
+        iceServers: iceServer,
+        iceCandidateFilter(info) {
+          return info.type === 'relay'
+        }
+      })
+
+      Promise.all([
+        Auth.anonymous({serverUrl: localStorage.getItem('serverUrl') || defaultServerUrl}).then(this.client1.auth),
+        Auth.anonymous({serverUrl: localStorage.getItem('serverUrl') || defaultServerUrl}).then(this.client2.auth),
+      ])
+//      .then(this.default_resolution_setting)
+      .then(this.joinCallRoom)
+      .then(this.setupCall)
+      .catch(function (error) {
+        console.log(error)
+      })
+    }
+    
+
+    reset300() {
+	//this.handleClickStop();
+	//this.handleClickStart();
+//        this.resolution_setting_300();
+	this.constraints.video.height.exact = 300;
+	this.constraints.video.width.exact = 300;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	console.log(this.constraints)
+//	sessionStorage.setItem("reloading","3");
+//	document.location.reload();
+    }
+
+    reset400() {
+//	this.handleClickStop();
+	this.constraints.video.height.exact = 400;
+	this.constraints.video.width.exact = 400;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+//	this.handleClickStart();
+    }
+    reset200() {
+//	this.handleClickStop();
+	this.constraints.video.height.exact = 200;
+	this.constraints.video.width.exact = 200;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+//	this.handleClickStart();
+    }
+
+    reset5() {
+  //      this.fps_setting_5();
+	this.constraints.video.frameRate=5;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+    }
+    reset10() {
+	this.constraints.video.frameRate=10;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+    }
+    reset15() {
+	this.constraints.video.frameRate=15;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+    }
+    mute(){
+	this.constraints.audio=false;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+    }
+    unmute(){
+	this.constraints.audio=true;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+    }
+
+    handleClickSettings() {
+      this.setState({
+        open: true
+      })
+    }
+
+    handleCloseSettings() {
+      // save the settings:
+      localStorage.setItem("serverUrl", this.state.serverUrl || defaultServerUrl);
+      localStorage.setItem("iceServerUrl", this.state.iceServerUrl || defaultIceUrl);
+      localStorage.setItem("iceUser", this.state.iceUser || defaultIceUser);
+      localStorage.setItem("icePasswd", this.state.icePasswd || defaultIcePass);
+      this.handleClickStop()
+      this.handleClickStart()
+      this.setState({
+        open: false
+      })
+
+    }
+
+    handleServerUrlChange(e) {
+      this.setState({
+        serverUrl: e.target.value
+      })
+
+    }
+
+    handleIceServerChange(e) {
+      this.setState({
+        iceServerUrl: e.target.value
+      })
+    }
+
+    handleIceUserChange(e) {
+      this.setState({
+        iceUser: e.target.value
+      })
+    }
+
+
+    handleIcePasswdChange(e) {
+      this.setState({
+        icePasswd: e.target.value
+      })
+    }
+
+    render() {
+      console.log('this.state=', this.state)
+      console.log('the value is:' + !!(this.state && this.state.open) || false)
+      return (
+          <ul>
+            <svg className="svgButton" onClick={this.handleClickSettings} fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 15.31L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>
+            </svg>
+            <Dialog
+              open={!!(this.state && this.state.open)  }
+              onClose={this.handleCloseSettings}
+              aria-labelledby="form-dialog-title"
+            >
+            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                To subscribe to this website, please enter your email address here. We will send
+                updates occationally.
+              </DialogContentText>
+              <TextField
+                margin="dense"
+                label="Server Url"
+                value = {this.state && this.state.serverUrl || localStorage.getItem('serverUrl') || defaultServerUrl}
+                onChange = {this.handleServerUrlChange}
+                fullWidth
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Ice Url"
+                value = {this.state && this.state.iceServerUrl || localStorage.getItem('iceServerUrl') || defaultIceUrl}
+                onChange = {this.handleIceServerChange}
+                fullWidth
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Ice Server User Name"
+                value = {this.state && this.state.iceUser || localStorage.getItem('iceUser') || defaultIceUser}
+                onChange = {this.handleIceUserChange}
+                fullWidth
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Ice Server Pass word"
+                value = {this.state && this.state.icePasswd || localStorage.getItem('icePasswd') || defaultIcePass}
+                onChange = {this.handleIcePasswdChange}
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCloseSettings} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+            <Button onClick={this.handleClickStart}>Start</Button>
+            <Button onClick={this.handleClickStop}>Stop</Button>
+            <hr/>
+            <video ref="self1" className="Video"></video>
+            <video ref="self2" className="Video"></video>
+            <video ref="remote1" className="Video"></video>
+            <video ref="remote2" className="Video"></video><br/>
+	    <Button color="primary" onClick={this.reset200}>resolution:200*200</Button>
+	    <Button color="primary" onClick={this.reset300}>resolution:300*300</Button>
+	    <Button color="primary" onClick={this.reset400}>resolution:400*400</Button><hr/>
+	    <Button color="primary" onClick={this.reset5}>fps:5</Button>
+	    <Button color="primary" onClick={this.reset10}>fps:10</Button>
+	    <Button color="primary" onClick={this.reset15}>fps:15</Button><hr/>
+	    <Button color="primary" onClick={this.mute}>mute</Button>
+	    <Button color="primary" onClick={this.unmute}>unmute</Button>
+
+          </ul>
+      );
+    }
+}
+
+// Get apps state and pass it as props to UserList
+//      > whenever state changes, the UserList will automatically re-render
+function mapStateToProps(state) {
+    return {
+        users: state.users
+    };
+}
+
+// Get actions and pass them as props to to UserList
+//      > now UserList has this.props.selectUser
+function matchDispatchToProps(dispatch){
+    return bindActionCreators({selectUser, reportData}, dispatch);
+}
+
+// We don't want to return the plain UserList (component) anymore, we want to return the smart Container
+//      > UserList is now aware of state and actions
+export default connect(mapStateToProps, matchDispatchToProps)(WebRTC);
