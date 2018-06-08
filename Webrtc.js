@@ -17,13 +17,7 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog';
 
-/*
-const defaultIceUrl = 'turn:turn.demo.c3.ericsson.net:443?transport=tcp'
-const defaultIceUser = 'c3-turn'
-const defaultIcePass = 'see-three'
-const defaultServerUrl = 'https://demo.c3.ericsson.net'
-*/
-const defaultIceUrl = 'turn:localhost:443?transport=tcp'
+const defaultIceUrl = 'turn:localhost:444?transport=tcp'
 const defaultIceUser = '2147483647:forever'
 const defaultIcePass = 'kN8b7k8l2hXJq8T9B/W+ZXjG8Nc='
 const defaultServerUrl = 'https://demo.c3.ericsson.net'
@@ -33,7 +27,7 @@ var RTT_array = new Array()
 var PL_array = new Array() 
 var NACK_array = new Array()
 var Plis_array = new Array()
-//var message_sent = new Array();   
+
 var old_PL = 0
 var old_NACK = 0
 var old_Plis = 0
@@ -44,7 +38,9 @@ var current_read_Plis = 0
 var true_PL = 0
 var true_NACK = 0
 var true_Plis = 0
-var socket;
+var videoSenderIndex 
+var videoExist = true
+var socket
 var Message_map = {
 		   	"6":"Good!", 
 		   	"5":"Recommend: Reduce the resolution to keep is stable.", 
@@ -52,20 +48,23 @@ var Message_map = {
 			"3":"Highly Recommend: Reduce the resolution to keep is stable.", 
 			"2":"Highly Recommend: Drop the frame rate in the video OR Reduce the resolution to get a much clear and correct video in return.", 
 			"1":"The current network situation is extremely horrible, we strongly recommend you drop the video completely to keep audio fluency.", 
-			"0":"if the situation keep a while, we recommend you reboot your conference."}
+			"0":"if the situation keep a while, we recommend you reboot your conference.",
+			"NoVideo":"Video non-existent now. We won't score the video quality during this period.",
+			"Wait grade":"We'll show you the score of video quality for each 10 seconds."
+		    }
+
+
 if(!window.WebSocket){
 	window.WebSocket = window.MozWebSocket;
 }
 
 if(window.WebSocket){
 	socket = new WebSocket("ws://localhost:8888/websocket");
-	socket.onmessage = function(event){		
-		var qos = document.getElementById('qosContent');
+	socket.onmessage = function(event){
+		var qos = document.getElementById('qosContent');			
 	        qos.value = event.data + "\r\n";
 		var ta = document.getElementById('responseContent');
 		ta.value = Message_map[event.data] + "\r\n";
-		console.log("receiving aray from backend:\r\n")
-		//console.log(event.data)
 	};
 
 	socket.onopen = function(event){
@@ -95,6 +94,7 @@ class WebRTC extends Component {
     constructor(props) {
       super(props)
       this.handleClickStart = this.handleClickStart.bind(this)
+      this.rehandleClickStart = this.rehandleClickStart.bind(this)
       this.handleClickStop = this.handleClickStop.bind(this)
       this.joinCallRoom = this.joinCallRoom.bind(this)
       this.setupCall = this.setupCall.bind(this)
@@ -106,11 +106,38 @@ class WebRTC extends Component {
       this.handleIcePasswdChange = this.handleIcePasswdChange.bind(this)
       this.timeout = this.timeout.bind(this)
       this.timer_sending_parameters = this.timer_sending_parameters.bind(this)
-
       this._dataCount = 0
       this._bytesReceived = 0
       this.qos = QoS
+      this.reset300 = this.reset300.bind(this)
+      this.reset400 = this.reset400.bind(this)
+      this.reset200 = this.reset200.bind(this)
+      this.reset5 = this.reset5.bind(this)
+      this.reset10 = this.reset10.bind(this)
+      this.reset15 = this.reset15.bind(this)
+      this.videoOff = this.videoOff.bind(this)
+      this.videoOn = this.videoOn.bind(this)
+      this.displayVideoConstraints = this.displayVideoConstraints.bind(this)
+      this.handle_index = this.handle_index.bind(this)
     }
+
+    handle_index(){
+      if(this.client1 && this.client1.rooms[0]) {
+          this.client1.rooms[0].calls[this.client2.user.id]._peerConnection.getStats().then(e => {
+            console.log(e)
+            Object.keys(e).forEach(function(key,index){ 
+              if(e[key].googNacksReceived){
+                  //console.log(e[key].googNacksReceived);
+                  videoSenderIndex = index
+                  console.log(videoSenderIndex);
+                  return;
+              }          
+            })
+          })
+      }
+      
+    }
+
 
     timeout() {
       this._handleTimeout = setTimeout(this.timeout, 1000)
@@ -122,8 +149,6 @@ class WebRTC extends Component {
             console.log('Cannot read metrics from the browser, please check the connection')
             return
           }
-          //console.log('RTT is:', e['Conn-audio-1-0'].googRtt)
-	   
           // report the RTT to storage!
           if (e['Conn-audio-1-0'].googRtt < 30000 && e['Conn-audio-1-0'].googRtt > 0) {
              this.props.reportData({
@@ -136,63 +161,62 @@ class WebRTC extends Component {
              this._dataCount += 1
           }
 
-/*
-	  var keyNames = Object.keys(e);
-	  console.log(keyNames);
-*/
-	  if(!Object.keys(e)[31]) {
+
+	  //var keyNames = Object.keys(e);
+	  //console.log(keyNames);
+    //console.log(e[keyNames[9]].id);
+      console.log(videoSenderIndex)
+
+	  if(!Object.keys(e)[videoSenderIndex]) {
 	  console.log ('waiting...')
 	  return         
 	  }
+	  if(!videoExist) {
+	  return         
+	  }
 
-          current_Rtt = parseInt(Object.values(e)[31].googRtt)
+    current_Rtt = parseInt(Object.values(e)[videoSenderIndex].googRtt)
 	  if (current_Rtt != 0) {
 		console.log('ssrc_videoSender.RTT:', current_Rtt)	  
 		RTT_array.push(current_Rtt)
-		//console.log('RTT_array:', RTT_array)
-		// send(RTT_array)
 
-
-		current_read_PL = parseInt(Object.values(e)[31].packetsLost)
+		current_read_PL = parseInt(Object.values(e)[videoSenderIndex].packetsLost)
 		if (current_read_PL >= old_PL){
 		true_PL = current_read_PL - old_PL
 		}
 		else{
 		true_PL = current_read_PL
-		console.log("Shouldnot!!!")
+		console.log("you change setting here...")
 		}
 		console.log('ssrc_videoSender.PL:', true_PL)
 		PL_array.push(true_PL)
 		old_PL = current_read_PL
-		//console.log('PL_:', PL_array)
 
 
-		current_read_NACK = parseInt(Object.values(e)[31].googNacksReceived)
+		current_read_NACK = parseInt(Object.values(e)[videoSenderIndex].googNacksReceived)
 		if (current_read_NACK >= old_NACK){
 		true_NACK = current_read_NACK - old_NACK
 		}
 		else{
 		true_NACK = current_read_NACK
-		console.log("Shouldnot!!!")
+		console.log("you change setting here...")
 		}
 		console.log('ssrc_videoSender.NACK:', true_NACK)
 		NACK_array.push(true_NACK)
 		old_NACK = current_read_NACK
-		//console.log('NACK_array:', NACK_array)
 
 
-		current_read_Plis = parseInt(Object.values(e)[31].googPlisReceived)
+		current_read_Plis = parseInt(Object.values(e)[videoSenderIndex].googPlisReceived)
 		if (current_read_Plis >= old_Plis){
 		true_Plis = current_read_Plis - old_Plis
 		}
 		else{
 		true_Plis = current_read_Plis
-		console.log("Shouldnot!!!")
+		console.log("you change setting here...")
 		}
 		console.log('ssrc_videoSender.Plis:', true_Plis)	
 		Plis_array.push(true_Plis)
 		old_Plis = current_read_Plis
-		//console.log('Plis_array:', Plis_array)
    	   } else {
 		console.log("RTT=0,drop this record!")
 		return
@@ -201,24 +225,24 @@ class WebRTC extends Component {
       }
     }
 	
-      timer_sending_parameters() {
-	this._handleTimer = setTimeout(this.timer_sending_parameters, 10000)
-	console.log('RTT_array:', RTT_array)
-	console.log('PL_:', PL_array)
-	console.log('NACK_array:', NACK_array)
-	console.log('Plis_array:', Plis_array)
-	//message_sent[0] = RTT_array
-	//message_sent[1] = PL_array
-	//message_sent[2] = NACK_array
-	//message_sent[3] = Plis_array
-	if(RTT_array.length != 0){
-        	send([RTT_array,PL_array,NACK_array,Plis_array])
-		}
-	RTT_array = []
-	PL_array = []
-	NACK_array = []
-	Plis_array = []
-	}
+    timer_sending_parameters() {
+    	this._handleTimer = setTimeout(this.timer_sending_parameters, 10000)
+      if(!videoExist) {
+    	  console.log ('after 10s still video non-existent...')
+    	  RTT_array = []
+    	  PL_array = []
+    	  NACK_array = []
+    	  Plis_array = []
+    	  return         
+      }
+    	if(RTT_array.length != 0){
+            	send([RTT_array,PL_array,NACK_array,Plis_array])
+    	}
+    	RTT_array = []
+    	PL_array = []
+    	NACK_array = []
+    	Plis_array = []
+	  }
     
 
 
@@ -239,7 +263,7 @@ class WebRTC extends Component {
       this._start = true
       setTimeout(() => {
         this.timeout()
-	this.timer_sending_parameters()
+        this.timer_sending_parameters()
       }, 1000)
     }
 
@@ -268,7 +292,8 @@ class WebRTC extends Component {
         this.client1 = null
         this.client2 = null
         clearTimeout(this._handleTimeout)
-	clearTimeout(this._handleTimer)
+	      clearTimeout(this._handleTimer)
+	      this._start = false
       }
     }
 
@@ -291,7 +316,14 @@ class WebRTC extends Component {
           return info.type === 'relay'
         }
       })
-
+	this.constraints = {
+	  video:{
+	    height:480,
+	    width:480,
+	    frameRate: 30	
+	  },
+	  audio:true,
+	}
       Promise.all([
         Auth.anonymous({serverUrl: localStorage.getItem('serverUrl') || defaultServerUrl}).then(this.client1.auth),
         Auth.anonymous({serverUrl: localStorage.getItem('serverUrl') || defaultServerUrl}).then(this.client2.auth),
@@ -303,11 +335,34 @@ class WebRTC extends Component {
       })
     }
 
+	rehandleClickStart() {	
+	this.handleClickStart();
+	setTimeout(() => {
+		this.source1.reconfigure(this.constraints);
+		this.source2.reconfigure(this.constraints);
+		this.displayVideoConstraints();
+       		 }, 4000)
+  setTimeout(this.handle_index,5000)  
+	var qos = document.getElementById('qosContent');
+        qos.value = "Wait grade" + "\r\n";
+	var ta = document.getElementById('responseContent');
+	ta.value = Message_map["Wait grade"] + "\r\n";
+	}
+
     handleClickSettings() {
       this.setState({
         open: true
       })
     }
+
+	displayVideoConstraints(){
+	    var vh = document.getElementById('video-height');
+	    vh.value = this.constraints.video.height ;
+	    var vw = document.getElementById('video-width');
+	    vw.value = this.constraints.video.width ;
+	    var vf = document.getElementById('video-frameRate');
+	    vf.value = this.constraints.video.frameRate ;
+	}
 
     handleCloseSettings() {
       // save the settings:
@@ -316,11 +371,10 @@ class WebRTC extends Component {
       localStorage.setItem("iceUser", this.state.iceUser || defaultIceUser);
       localStorage.setItem("icePasswd", this.state.icePasswd || defaultIcePass);
       this.handleClickStop()
-      this.handleClickStart()
+      this.rehandleClickStart()
       this.setState({
         open: false
       })
-
     }
 
     handleServerUrlChange(e) {
@@ -347,6 +401,84 @@ class WebRTC extends Component {
       this.setState({
         icePasswd: e.target.value
       })
+    }
+    reset200() {
+	videoSenderIndex += 8;
+	this.constraints.video.height = 200;
+	this.constraints.video.width = 200;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+    reset300() {
+	videoSenderIndex += 8;
+	this.constraints.video.height = 300;
+	this.constraints.video.width = 300;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+
+    reset400() {
+	videoSenderIndex += 8;
+	this.constraints.video.height = 400;
+	this.constraints.video.width = 400;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+    reset5() {
+	videoSenderIndex += 8;
+	this.constraints.video.frameRate=5;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+    reset10() {
+	videoSenderIndex += 8;
+	this.constraints.video.frameRate=10;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+    reset15() {
+	videoSenderIndex += 8;
+	this.constraints.video.frameRate=15;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	this.displayVideoConstraints();
+    }
+    videoOff(){
+	videoSenderIndex += 4;
+	videoExist = false;
+	this.constraints.video=false;
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	console.log ('video non-existent')
+	var qos = document.getElementById('qosContent');
+        qos.value = "NoVideo" + "\r\n";
+	var ta = document.getElementById('responseContent');
+	ta.value = Message_map["NoVideo"] + "\r\n";
+	this.displayVideoConstraints();
+    }
+    videoOn(){
+	videoSenderIndex += 8;
+	videoExist = true;
+	this.constraints = {
+	  video:{
+	    height:460,
+	    width:460,
+	    frameRate: 30	
+	  },
+	  audio:true,
+	}
+	this.source1.reconfigure(this.constraints);
+	this.source2.reconfigure(this.constraints);
+	var qos = document.getElementById('qosContent');
+        qos.value = "Wait grade" + "\r\n";
+	var ta = document.getElementById('responseContent');
+	ta.value = Message_map["Wait grade"] + "\r\n";
+	this.displayVideoConstraints();
     }
 
     render() {
@@ -406,24 +538,42 @@ class WebRTC extends Component {
               </Button>
             </DialogActions>
           </Dialog>
-            <Button onClick={this.handleClickStart}>Start</Button>
+            <Button onClick={this.rehandleClickStart}>Start</Button>
             <Button onClick={this.handleClickStop}>Stop</Button>
             <hr/>
             <video ref="self1" className="Video"></video>
-            <video ref="self2" className="Video"></video>
+            <video ref="self2" className="Video"></video><br/>
             <video ref="remote1" className="Video"></video>
             <video ref="remote2" className="Video"></video><br/>
 	  <form>
 	    <hr color="red"/>
-	    <h2>real-time score for the video quality:</h2>
-	    <mark><li><textarea id = "qosContent" color="red" rows = "2" cols = "2" readOnly autoFocus></textarea></li>
-		  Note:"6" stand for the best quality level,"0" stand for the worst </mark>  
+	    <h2>Real-Time Score of the Video Quality:</h2>
+	    <textarea id = "qosContent" color="red" rows = "2" cols = "10" readOnly autoFocus></textarea>
+		Note: video quality ranking: <mark>the best 6</mark> --> 5 --> 4 --> 3 --> 2 --> 1 --> <mark>0 the worst</mark>
+	                               
             <h2>Remedy Discription:</h2>
-	    <textarea id = "responseContent"  rows = "4" cols = "50" readOnly autoFocus></textarea>    	  
+	    <textarea id = "responseContent"  rows = "2" cols = "80" readOnly autoFocus></textarea>    	  
 	  </form>
-	  <Button color="primary">Drop frame rate</Button>
-	  <Button color="primary">reduce resolution</Button>
-	  <Button color="primary">drop video</Button>
+	   <li>Current Video Constriants: </li>
+		height:
+	   <textarea id = "video-height"  rows = "1" cols = "10" readOnly autoFocus></textarea> 
+		width:
+	   <textarea id = "video-width"  rows = "1" cols = "10" readOnly autoFocus></textarea> 
+		framerate:
+	   <textarea id = "video-frameRate"  rows = "1" cols = "10" readOnly autoFocus></textarea>
+	   <h2>Video Control Options:</h2>	
+	   <li>select resolution</li>
+	    <Button color="primary" onClick={this.reset200}>200*200</Button>
+	    <Button color="primary" onClick={this.reset300}>300*300</Button>
+	    <Button color="primary" onClick={this.reset400}>400*400</Button><hr/>
+	   <li>select framerate</li>
+	    <Button color="primary" onClick={this.reset5}> 5 fps</Button>
+	    <Button color="primary" onClick={this.reset10}> 10 fps</Button>
+	    <Button color="primary" onClick={this.reset15}> 15 fps</Button><hr/>
+	   <li>switching video</li>
+	    <Button color="primary" onClick={this.videoOff}>video off</Button>
+	    <Button color="primary" onClick={this.videoOn}>video on</Button><hr/>
+	    Note: Video control options will be adopted immediately. Wait for 10 more seconds to get a refreshed score according to your change.
           </ul>
       );
     }
@@ -446,3 +596,4 @@ function matchDispatchToProps(dispatch){
 // We don't want to return the plain UserList (component) anymore, we want to return the smart Container
 //      > UserList is now aware of state and actions
 export default connect(mapStateToProps, matchDispatchToProps)(WebRTC);
+
