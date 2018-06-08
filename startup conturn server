@@ -30,3 +30,12 @@ v@v-desktop:~/git/turn-netsim/coturn$ docker start 1fafbb939b34
 v@v-desktop:~/git/turn-netsim/coturn$ docker ps
 CONTAINER ID        IMAGE                                     COMMAND             CREATED             STATUS              PORTS                                          NAMES
 1fafbb939b34        dock.cct.ericsson.net/coturn-netsim:001   "/sbin/our_init"    About an hour ago   Up 3 seconds        0.0.0.0:443->443/tcp, 0.0.0.0:3001->3000/tcp   coturn_synapse-coturn_1
+
+
+vv@vvde-air turn-netsim$ cd coturn/
+vv@vvde-air coturn$ docker-compose up -d
+Starting coturn_synapse-coturn_1 ... 
+Starting coturn_synapse-coturn_1 ... done
+vv@vvde-air coturn$ docker ps
+CONTAINER ID        IMAGE                                     COMMAND             CREATED             STATUS              PORTS                                          NAMES
+bf56de06ed6c        dock.cct.ericsson.net/coturn-netsim:001   "/sbin/our_init"    17 hours ago        Up 2 minutes        0.0.0.0:443->443/tcp, 0.0.0.0:3001->3000/tcp   coturn_synapse-coturn_1
