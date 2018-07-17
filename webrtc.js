@@ -188,8 +188,8 @@ class WebRTC extends Component {
           }
 
 
-	  //var keyNames = Object.keys(e);
-	  //console.log(keyNames);
+	//  var keyNames = Object.keys(e);
+	//  console.log(keyNames);
     //console.log(e[keyNames[9]].id);
       console.log(videoSenderIndex)
 
@@ -669,4 +669,3 @@ function matchDispatchToProps(dispatch){
 // We don't want to return the plain UserList (component) anymore, we want to return the smart Container
 //      > UserList is now aware of state and actions
 export default connect(mapStateToProps, matchDispatchToProps)(WebRTC);
-
